@@ -1,14 +1,53 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:officersclubdhaka/authentication/view/authScreen.dart';
+import 'package:officersclubdhaka/mainApp/util/resources/color.dart';
+import 'package:officersclubdhaka/mainApp/util/resources/images.dart';
 
-class SplashScreen extends StatelessWidget {
+class SplashScreen extends StatefulWidget {
+  @override
+  _SplashScreenState createState() => _SplashScreenState();
+}
+
+class _SplashScreenState extends State<SplashScreen> {
+
+  @override
+  void initState() {
+    super.initState();
+    Future.delayed(Duration(seconds: 2),()=>Get.to(()=>AuthScreen()));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Text(
-          'SplashScreen'
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [
+              AppColor.purple,
+              AppColor.blue
+            ],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+          )
         ),
-      ),
+        child: Center(
+          child: Card(
+            elevation: 3,
+            child: Padding(
+              padding: const EdgeInsets.all(18.0),
+              child: Hero(
+                tag: Images.logo,
+                child: Image.asset(
+                  Images.logo,
+                  height: 75,
+                  width: 75,
+                ),
+              ),
+            )
+          ),
+        ),
+      )
     );
   }
 }

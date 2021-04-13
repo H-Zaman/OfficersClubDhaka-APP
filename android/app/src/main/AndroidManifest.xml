@@ -2,6 +2,7 @@
     package="com.shuvro.officersclubdhaka">
    <application
         android:label="officersclubdhaka"
+       android:usesCleartextTraffic="true"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"

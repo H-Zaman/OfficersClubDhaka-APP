@@ -4,8 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:officersclubdhaka/____demoData.dart';
+import 'package:officersclubdhaka/features/hall/view/hallScreen.dart';
 import 'package:officersclubdhaka/features/memberList/view/memberListScreen.dart';
 import 'package:officersclubdhaka/mainApp/util/resources/color.dart';
+import 'package:officersclubdhaka/mainApp/util/resources/images.dart';
+import 'package:officersclubdhaka/mainApp/util/sharedWidgets/itemWidget.dart';
+import 'package:officersclubdhaka/mainApp/util/sharedWidgets/screenLoader.dart';
 
 class Boom extends StatelessWidget {
   static final drawerController = ZoomDrawerController();
@@ -18,7 +22,7 @@ class Boom extends StatelessWidget {
       mainScreen: Home(),
       borderRadius: 12.0,
       showShadow: true,
-      backgroundColor: Colors.grey[300],
+      backgroundColor: Colors.grey[300]!,
       slideWidth: MediaQuery.of(context).size.width*.35,
       openCurve: Curves.fastOutSlowIn,
       closeCurve: Curves.bounceIn,
@@ -185,7 +189,7 @@ class DrawerScreen extends StatelessWidget {
                   ),
                   ListTile(
                     onTap: () {
-                      Boom.drawerController.close();
+                      Boom.drawerController.close!();
                       Navigator.push(context, MaterialPageRoute(builder: (_)=>MemberListScreen()));
                     },
                     minVerticalPadding: 0,
@@ -275,132 +279,149 @@ class _HomeState extends State<Home> {
 
   int _selectedIndex = 0;
 
+  bool screenLoading = false;
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        body: CustomScrollView(
-          slivers: [
-            SliverAppBar(
-              backgroundColor: AppColor.blue,
-              pinned: true,
-              leading: IconButton(
-                onPressed: (){
-                  if(Boom.drawerController.isOpen()){
-                    Boom.drawerController.close();
-                  }else{
-                    Boom.drawerController.open();
-                  }
-                },
-                icon: FaIcon(
-                  Icons.menu,color: Colors.white,
-                ),
-              ),
-              actions: [
-                Container(
-                  height: 30,
-                  width: 50,
-                  margin: EdgeInsets.symmetric(vertical: 14),
-                  child: Icon(CupertinoIcons.qrcode_viewfinder,color: Colors.white,size: 30,),
-                ),
-                SizedBox(width: 10),
-                CircleAvatar(
-                  radius: 21,
-                  backgroundColor: Colors.white,
-                  child: CircleAvatar(
-                    maxRadius: 20,
-                    minRadius: 20,
-                    backgroundImage: NetworkImage(
-                        Demo.profilePic
-                    ),
+    return IsScreenLoading(
+      screenLoading: screenLoading,
+      child: Scaffold(
+          body: CustomScrollView(
+            slivers: [
+              SliverAppBar(
+                backgroundColor: AppColor.blue,
+                pinned: true,
+                leading: IconButton(
+                  onPressed: (){
+                    if(Boom.drawerController.isOpen!()){
+                      Boom.drawerController.close!();
+                    }else{
+                      Boom.drawerController.open!();
+                    }
+                  },
+                  icon: FaIcon(
+                    Icons.menu,color: Colors.white,
                   ),
                 ),
-                SizedBox(width: 10)
-              ],
-              floating: true,
-              snap: true,
-              flexibleSpace: FlexibleSpaceBar(
-                background: Container(
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      colors: [
-                        AppColor.blue,
-                        AppColor.purple,
-                      ],
-                    ),
-                    // borderRadius: BorderRadius.only(
-                    //   bottomLeft: Radius.circular(22),
-                    //   bottomRight: Radius.circular(22),
-                    // )
+                actions: [
+                  Container(
+                    height: 30,
+                    width: 50,
+                    margin: EdgeInsets.symmetric(vertical: 14),
+                    child: Icon(CupertinoIcons.qrcode_viewfinder,color: Colors.white,size: 30,),
                   ),
-                  padding: EdgeInsets.only(left: 20,right: 20,bottom: 12),
-                  child: Align(
-                    alignment: Alignment.bottomCenter,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Expanded(
-                          child: Text(
-                            'Welcome to Officer\'s Club Dhaka',
-                            style: TextStyle(
-                              fontSize: 32,
-                              color: Colors.white,
+                  SizedBox(width: 10),
+                  GestureDetector(
+                    onTap: (){
+                      setState(() {
+                        screenLoading = true;
+                      });
+                      Future.delayed(Duration(seconds: 3),(){
+                        setState(() {
+                          screenLoading = false;
+                        });
+                      });
+                    },
+                    child: CircleAvatar(
+                      radius: 21,
+                      backgroundColor: Colors.white,
+                      child: CircleAvatar(
+                        maxRadius: 20,
+                        minRadius: 20,
+                        backgroundImage: NetworkImage(
+                            Demo.profilePic
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(width: 10)
+                ],
+                floating: true,
+                snap: true,
+                flexibleSpace: FlexibleSpaceBar(
+                  background: Container(
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: [
+                          AppColor.blue,
+                          AppColor.purple,
+                        ],
+                      ),
+                      // borderRadius: BorderRadius.only(
+                      //   bottomLeft: Radius.circular(22),
+                      //   bottomRight: Radius.circular(22),
+                      // )
+                    ),
+                    padding: EdgeInsets.only(left: 20,right: 20,bottom: 12),
+                    child: Align(
+                      alignment: Alignment.bottomCenter,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Expanded(
+                            child: Text(
+                              'Welcome to Officer\'s Club Dhaka',
+                              style: TextStyle(
+                                fontSize: 32,
+                                color: Colors.white,
 
+                              ),
                             ),
                           ),
-                        ),
-                        Image.network(Demo.clubLogo)
-                      ],
+                          Hero(tag: Images.logo,child: Image.asset(Images.logo))
+                        ],
+                      ),
                     ),
                   ),
                 ),
+                expandedHeight: 180,
               ),
-              expandedHeight: 180,
-            ),
-            SliverList(
-                delegate: SliverChildListDelegate([
-                  Services(),
-                  LatestNews(),
-                  SizedBox(height: 12),
-                  Offers(),
-                  SizedBox(height: 12),
-                  RecentBlogs()
-                ])
-            )
-          ],
-        ),
-        bottomNavigationBar: BottomNavyBar(
-          selectedIndex: _selectedIndex,
-          showElevation: true, // use this to remove appBar's elevation
-          onItemSelected: (index) => setState(() {
-            _selectedIndex = index;
-          }),
-          items: [
-            BottomNavyBarItem(
-                icon: Icon(Icons.apps),
-                title: Text('Home'),
-                activeColor: AppColor.purple,
-                inactiveColor: AppColor.purple
-            ),
-            BottomNavyBarItem(
-                icon: FaIcon(FontAwesomeIcons.images),
-                title: Text('Gallery'),
-                activeColor: AppColor.purple,
-                inactiveColor: AppColor.purple
-            ),
-            BottomNavyBarItem(
-                icon: FaIcon(FontAwesomeIcons.microblog),
-                title: Text('Blog'),
-                activeColor: AppColor.purple,
-                inactiveColor: AppColor.purple
-            ),
-            BottomNavyBarItem(
-                icon: Icon(CupertinoIcons.chat_bubble_2_fill,size: 30),
-                title: Text('Chat'),
-                activeColor: AppColor.purple,
-                inactiveColor: AppColor.purple
-            ),
-          ],
-        )
+              SliverList(
+                  delegate: SliverChildListDelegate([
+                    Services(),
+                    LatestNews(),
+                    SizedBox(height: 12),
+                    Offers(),
+                    SizedBox(height: 12),
+                    RecentBlogs()
+                  ])
+              )
+            ],
+          ),
+          bottomNavigationBar: BottomNavyBar(
+            selectedIndex: _selectedIndex,
+            showElevation: true, // use this to remove appBar's elevation
+            onItemSelected: (index) => setState(() {
+              _selectedIndex = index;
+            }),
+            items: [
+              BottomNavyBarItem(
+                  icon: Icon(Icons.apps),
+                  title: Text('Home'),
+                  activeColor: AppColor.purple,
+                  inactiveColor: AppColor.purple
+              ),
+              BottomNavyBarItem(
+                  icon: FaIcon(FontAwesomeIcons.images),
+                  title: Text('Gallery'),
+                  activeColor: AppColor.purple,
+                  inactiveColor: AppColor.purple
+              ),
+              BottomNavyBarItem(
+                  icon: FaIcon(FontAwesomeIcons.microblog),
+                  title: Text('Blog'),
+                  activeColor: AppColor.purple,
+                  inactiveColor: AppColor.purple
+              ),
+              BottomNavyBarItem(
+                  icon: Icon(CupertinoIcons.chat_bubble_2_fill,size: 30),
+                  title: Text('Chat'),
+                  activeColor: AppColor.purple,
+                  inactiveColor: AppColor.purple
+              ),
+            ],
+          )
+      ),
     );
   }
 }
@@ -432,14 +453,14 @@ class Services extends StatelessWidget {
           padding: EdgeInsets.symmetric(horizontal: 20,vertical: 12),
           physics: NeverScrollableScrollPhysics(),
           children: [
-            ServiceItemWidget(title: 'Cafeteria', image: Demo.cafeteriaLogo),
-            ServiceItemWidget(title: 'Salon', image: Demo.salonLogo),
-            ServiceItemWidget(title: 'Hall', image: Demo.hallLogo,),
-            ServiceItemWidget(title: 'Pool', image: Demo.poolLogo,),
-            ServiceItemWidget(title: 'Coupon', image: Demo.couponLogo),
-            ServiceItemWidget(title: 'Guest', image: Demo.guestLogo),
-            ServiceItemWidget(title: 'Library', image: Demo.libraryLogo),
-            ServiceItemWidget(title: 'Laundry', image: Demo.laundryLogo),
+            ItemWidget(title: 'Cafeteria', image: Demo.cafeteriaLogo),
+            ItemWidget(title: 'Salon', image: Demo.salonLogo),
+            ItemWidget(title: 'Hall', image: Demo.hallLogo,route: HallScreen()),
+            ItemWidget(title: 'Pool', image: Demo.poolLogo,),
+            ItemWidget(title: 'Coupon', image: Demo.couponLogo),
+            ItemWidget(title: 'Guest', image: Demo.guestLogo),
+            ItemWidget(title: 'Library', image: Demo.libraryLogo),
+            ItemWidget(title: 'Laundry', image: Demo.laundryLogo),
           ],
         ),
       ],
@@ -447,39 +468,6 @@ class Services extends StatelessWidget {
   }
 }
 
-class ServiceItemWidget extends StatelessWidget {
-  final String title;
-  final String image;
-
-  const ServiceItemWidget({Key key, this.title, this.image}) : super(key: key);
-  @override
-  Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        Container(
-          padding: EdgeInsets.only(left: 14,right: 14,bottom: 20,top: 10),
-          child: Center(
-            child: image == null ? Icon(Icons.dashboard,color: AppColor.blue,size: 42,) : Image.network(image),
-          ),
-        ),
-        Positioned(
-          bottom: 0,
-          right: 2,
-          left: 2,
-          child: Center(
-            child: Text(
-              title,
-              style: TextStyle(
-                color: AppColor.purple,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ),
-        )
-      ],
-    );
-  }
-}
 
 class LatestNews extends StatelessWidget {
   @override
@@ -572,19 +560,19 @@ class Offers extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              ServiceItemWidget(
+              ItemWidget(
                 title: 'VISA',
                 image: Demo.visaLogo,
               ),
-              ServiceItemWidget(
+              ItemWidget(
                 title: 'Nagad',
                 image: Demo.nagadLogo,
               ),
-              ServiceItemWidget(
+              ItemWidget(
                 title: 'Bkash',
                 image: Demo.bKashLogo,
               ),
-              ServiceItemWidget(
+              ItemWidget(
                 title: 'OCD',
                 image: Demo.cafeteriaLogo,
               ),

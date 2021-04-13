@@ -59,19 +59,19 @@ class MemberListScreen extends StatelessWidget {
                       child: CircleAvatar(
                           radius: 21,
                           backgroundImage: NetworkImage(
-                              user.image
+                              user.image!
                           )
                       ),
                     ),
                     title: Text(
-                      user.name,
+                      user.name!,
                       style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold
                       ),
                     ),
                     subtitle: Text(
-                      user.phone,
+                      user.phone!,
                       style: TextStyle(
                           fontSize: 16
                       ),
