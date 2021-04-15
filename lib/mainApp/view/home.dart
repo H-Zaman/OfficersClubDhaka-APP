@@ -1,4 +1,5 @@
 import 'package:bottom_navy_bar/bottom_navy_bar.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
@@ -10,6 +11,8 @@ import 'package:officersclubdhaka/mainApp/util/resources/color.dart';
 import 'package:officersclubdhaka/mainApp/util/resources/images.dart';
 import 'package:officersclubdhaka/mainApp/util/sharedWidgets/itemWidget.dart';
 import 'package:officersclubdhaka/mainApp/util/sharedWidgets/screenLoader.dart';
+import 'package:officersclubdhaka/user/viewModel/userViewModel.dart';
+import 'package:officersclubdhaka/user/viewModel/usreBackUp.dart';
 
 class Boom extends StatelessWidget {
   static final drawerController = ZoomDrawerController();
@@ -57,14 +60,14 @@ class DrawerScreen extends StatelessWidget {
                       height: 85,
                       width: 85,
                       decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(8),
-                          border: Border.all(color: Colors.white,width: 1.5),
-                          image: DecorationImage(
-                              image: NetworkImage(
-                                  Demo.profilePic
-                              ),
-                              fit: BoxFit.cover
-                          )
+                        borderRadius: BorderRadius.circular(8),
+                        border: Border.all(color: Colors.white,width: 1.5),
+                        image: DecorationImage(
+                          image: CachedNetworkImageProvider(
+                            UserViewModel.user.value.image ?? BackUpData.profileImage
+                          ),
+                          fit: BoxFit.cover
+                        )
                       ),
                     ),
                     SizedBox(width: 14),
@@ -72,7 +75,7 @@ class DrawerScreen extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'M.M. Hasibuzzaman',
+                          UserViewModel.user.value.fullNameEnglish!,
                           style: TextStyle(
                               fontSize: 22,
                               fontWeight: FontWeight.w700,
@@ -81,7 +84,7 @@ class DrawerScreen extends StatelessWidget {
                         ),
                         SizedBox(height: 8),
                         Text(
-                          'ID : 10245896',
+                          'ID : ${UserViewModel.user.value.membershipId!}',
                           style: TextStyle(
                               color: Colors.white,
                               fontSize: 16
@@ -311,26 +314,14 @@ class _HomeState extends State<Home> {
                     child: Icon(CupertinoIcons.qrcode_viewfinder,color: Colors.white,size: 30,),
                   ),
                   SizedBox(width: 10),
-                  GestureDetector(
-                    onTap: (){
-                      setState(() {
-                        screenLoading = true;
-                      });
-                      Future.delayed(Duration(seconds: 3),(){
-                        setState(() {
-                          screenLoading = false;
-                        });
-                      });
-                    },
+                  CircleAvatar(
+                    radius: 21,
+                    backgroundColor: Colors.white,
                     child: CircleAvatar(
-                      radius: 21,
-                      backgroundColor: Colors.white,
-                      child: CircleAvatar(
-                        maxRadius: 20,
-                        minRadius: 20,
-                        backgroundImage: NetworkImage(
-                            Demo.profilePic
-                        ),
+                      maxRadius: 20,
+                      minRadius: 20,
+                      backgroundImage: NetworkImage(
+                        UserViewModel.user.value.image ?? BackUpData.profileImage
                       ),
                     ),
                   ),

@@ -1,25 +1,11 @@
 import 'package:officersclubdhaka/features/hall/model/eventMOdel.dart';
 
 class Demo{
-  static final users = <User>[
-    User(name: 'Karim Zaman', phone: '01591-696 545', image: 'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940'),
-    User(name: 'Sofia Karim', phone: '01674-698 325', image: 'https://images.pexels.com/photos/1382731/pexels-photo-1382731.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940'),
-    User(name: 'Abbas Hossain', phone: '01234-698 741', image: 'https://images.pexels.com/photos/1043471/pexels-photo-1043471.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500'),
-    User(name: 'Yashfi Islam', phone: '01691-654 123', image: 'https://images.pexels.com/photos/428364/pexels-photo-428364.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940'),
-    User(name: 'Karim Zaman', phone: '01591-696 545', image: 'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940'),
-    User(name: 'Sofia Karim', phone: '01674-698 325', image: 'https://images.pexels.com/photos/1382731/pexels-photo-1382731.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940'),
-    User(name: 'Abbas Hossain', phone: '01234-698 741', image: 'https://images.pexels.com/photos/1043471/pexels-photo-1043471.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500'),
-    User(name: 'Yashfi Islam', phone: '01234-852 369', image: 'https://images.pexels.com/photos/428364/pexels-photo-428364.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940'),
-    User(name: 'Karim Zaman', phone: '01591-696 545', image: 'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940'),
-    User(name: 'Sofia Karim', phone: '01674-698 325', image: 'https://images.pexels.com/photos/1382731/pexels-photo-1382731.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940'),
-    User(name: 'Abbas Hossain', phone: '01234-698 741', image: 'https://images.pexels.com/photos/1043471/pexels-photo-1043471.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500'),
-    User(name: 'Yashfi Islam', phone: '03147-875 142', image: 'https://images.pexels.com/photos/428364/pexels-photo-428364.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940'),
-  ];
   static final profilePic = 'https://images.unsplash.com/photo-1541855492-581f618f69a0?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80';
   static final qrCode = 'https://i.ibb.co/g9CxVy1/qr-code.png';
   static final hall = 'http://www.ocd.spectrum.com.bd/Frontend/images/product/2.jpg';
-  static final hallLogo = 'https://cdn1.iconfinder.com/data/icons/buildings-95/130/24-512.png';
-  static final poolLogo = 'https://cdn.iconscout.com/icon/premium/png-256-thumb/swimming-pool-2923421-2432935.png';
+  static final hallLogo = 'https://cdn1.iconfinder.com/data/icons/buildings-95/130/24-512.png'; // unavailable
+  static final poolLogo = 'https://cdn.iconscout.com/icon/premium/png-256-thumb/swimming-pool-2923421-2432935.png';// unavailable
   static final cafeteriaLogo = 'https://i.pinimg.com/originals/cd/a9/7c/cda97c2ed39900207b1915a38116b373.png';
   static final salonLogo = 'https://cdn.iconscout.com/icon/premium/png-512-thumb/salon-logo-462569.png';
   static final nagadLogo = 'https://feegleejobs.com/wp-content/uploads/2019/11/NAGAD-LOGO.png';
@@ -51,13 +37,4 @@ class Demo{
     EventModel(time: DateTime(2021,4,23), event: 'Weedding'),
     EventModel(time: DateTime(2021,4,28), event: 'Weedding'),
   ];
-}
-
-
-class User{
-  String? name;
-  String? phone;
-  String? image;
-
-  User({this.name, this.phone, this.image});
 }

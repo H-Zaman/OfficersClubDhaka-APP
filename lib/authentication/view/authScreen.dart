@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_login/flutter_login.dart';
 import 'package:get/get.dart';
 import 'package:officersclubdhaka/authentication/repository/authrepo.dart';
+import 'package:officersclubdhaka/authentication/view/lib/flutter_login.dart';
 import 'package:officersclubdhaka/mainApp/util/resources/color.dart';
 import 'package:officersclubdhaka/mainApp/util/resources/images.dart';
 import 'package:officersclubdhaka/mainApp/view/home.dart';
@@ -12,6 +12,10 @@ class AuthScreen extends StatelessWidget {
     return FlutterLogin(
       hideForgotPasswordButton: true,
       hideSignUpButton: true,
+      messages: LoginMessages(
+        usernameHint: 'User ID',
+        passwordHint: 'Mobile Number',
+      ),
       theme: LoginTheme(
         titleStyle: TextStyle(
           color: Colors.white,
