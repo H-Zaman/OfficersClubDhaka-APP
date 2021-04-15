@@ -37,9 +37,9 @@ class _SplashScreenState extends State<SplashScreen> {
             child: Padding(
               padding: const EdgeInsets.all(18.0),
               child: Hero(
-                tag: Images.logo,
+                tag: Images.appLogo,
                 child: Image.asset(
-                  Images.logo,
+                  Images.appLogo,
                   height: 75,
                   width: 75,
                 ),

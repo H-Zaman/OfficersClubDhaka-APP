@@ -296,7 +296,6 @@ class AnimatedPasswordTextFormField extends StatefulWidget {
 
 class _AnimatedPasswordTextFormFieldState
     extends State<AnimatedPasswordTextFormField> {
-  var _obscureText = true;
 
   @override
   Widget build(BuildContext context) {

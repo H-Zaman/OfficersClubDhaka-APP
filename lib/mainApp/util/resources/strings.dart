@@ -11,7 +11,6 @@ class Strings{
   static final String hallBookingInfoTitle3 = 'Night Shift';
   static final String hallBookingInfoSubtitle3 = '5 pm to 11 pm';
   static final String hallBookingInfoTitle4 = 'No. of Hall Room';
-  static final String hallBookingInfoSubtitle4 = '3 (available for rent)';
   static final String hallBookingInfoTitle5 = 'Space Capacity';
   static final String hallBookingInfoSubtitle5 = '600 dinning and 300 sitting arrangement per floor at a time';
 }

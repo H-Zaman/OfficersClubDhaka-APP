@@ -11,7 +11,7 @@ class RowTextWidget extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(bottom: 6),
       child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Expanded(
               flex: 37,
@@ -29,7 +29,7 @@ class RowTextWidget extends StatelessWidget {
                   Text(
                     ':  ',
                     style: TextStyle(
-                        fontSize: 16,
+                        fontSize: 14,
                         fontWeight: FontWeight.bold
                     ),
                   )

@@ -20,7 +20,7 @@ class ItemWidget extends StatelessWidget {
           Container(
             padding: EdgeInsets.only(left: 14,right: 14,bottom: 20,top: 10),
             child: Center(
-              child: image == null ? Icon(Icons.dashboard,color: AppColor.blue,size: 42,) : Image.network(image!),
+              child: image == null ? Icon(Icons.dashboard,color: AppColor.blue,size: 42,) : Image.asset(image!),
             ),
           ),
           Positioned(

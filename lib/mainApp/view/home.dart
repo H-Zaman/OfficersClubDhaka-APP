@@ -359,7 +359,7 @@ class _HomeState extends State<Home> {
                               ),
                             ),
                           ),
-                          Hero(tag: Images.logo,child: Image.asset(Images.logo))
+                          Hero(tag: Images.appLogo,child: Image.asset(Images.appLogo))
                         ],
                       ),
                     ),
@@ -444,14 +444,14 @@ class Services extends StatelessWidget {
           padding: EdgeInsets.symmetric(horizontal: 20,vertical: 12),
           physics: NeverScrollableScrollPhysics(),
           children: [
-            ItemWidget(title: 'Cafeteria', image: Demo.cafeteriaLogo),
-            ItemWidget(title: 'Salon', image: Demo.salonLogo),
-            ItemWidget(title: 'Hall', image: Demo.hallLogo,route: HallScreen()),
-            ItemWidget(title: 'Pool', image: Demo.poolLogo,),
-            ItemWidget(title: 'Coupon', image: Demo.couponLogo),
-            ItemWidget(title: 'Guest', image: Demo.guestLogo),
-            ItemWidget(title: 'Library', image: Demo.libraryLogo),
-            ItemWidget(title: 'Laundry', image: Demo.laundryLogo),
+            ItemWidget(title: 'Cafeteria', image: Images.iconCafeteria),
+            ItemWidget(title: 'Salon', image: Images.iconSalon),
+            ItemWidget(title: 'Hall', image: Images.iconHall,route: HallScreen()),
+            ItemWidget(title: 'Pool', image: Images.iconPool),
+            ItemWidget(title: 'Coupon', image: Images.iconCoupon),
+            ItemWidget(title: 'Guest', image: Images.iconGuest),
+            ItemWidget(title: 'Library', image: Images.iconLibrary),
+            ItemWidget(title: 'Laundry', image: Images.iconLaundry),
           ],
         ),
       ],
@@ -553,19 +553,19 @@ class Offers extends StatelessWidget {
             children: [
               ItemWidget(
                 title: 'VISA',
-                image: Demo.visaLogo,
+                image: Images.iconVisa,
               ),
               ItemWidget(
                 title: 'Nagad',
-                image: Demo.nagadLogo,
+                image: Images.iconNagad,
               ),
               ItemWidget(
                 title: 'Bkash',
-                image: Demo.bKashLogo,
+                image: Images.iconBkash,
               ),
               ItemWidget(
                 title: 'OCD',
-                image: Demo.cafeteriaLogo,
+                image: Images.iconCafeteria,
               ),
             ],
           ),

@@ -1,17 +1,40 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:officersclubdhaka/____demoData.dart';
+import 'package:officersclubdhaka/features/hall/viewModel/hallViewModel.dart';
 import 'package:officersclubdhaka/mainApp/util/resources/color.dart';
 import 'package:officersclubdhaka/mainApp/util/resources/strings.dart';
 import 'package:paged_vertical_calendar/paged_vertical_calendar.dart';
 
 import 'hallPaymentScreen.dart';
+import 'widgets/hallPricingInfoWidget.dart';
 import 'widgets/rowTextInfoWidget.dart';
 
-class HallScreen extends StatelessWidget {
+class HallScreen extends StatefulWidget {
+  @override
+  _HallScreenState createState() => _HallScreenState();
+}
+
+class _HallScreenState extends State<HallScreen> {
+
+  bool initLoad = true;
+
+  getData() async{
+    await HallViewModel.init();
+    setState(() {
+      initLoad = false;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getData();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -55,7 +78,7 @@ class HallScreen extends StatelessWidget {
           ),
           RowTextWidget(
               title: Strings.hallBookingInfoTitle4,
-              subTitle: Strings.hallBookingInfoSubtitle4
+              subTitle: '${HallViewModel.hallList.length} (available for rent)'
           ),
           RowTextWidget(
               title: Strings.hallBookingInfoTitle5,
@@ -68,8 +91,9 @@ class HallScreen extends StatelessWidget {
     _buildHallPricing() => Padding(
       padding: const EdgeInsets.only(left: 20,top: 4),
       child: DefaultTabController(
-        length: 4,
+        length: HallViewModel.hallList.length,
         child: Column(
+          mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
@@ -100,29 +124,22 @@ class HallScreen extends StatelessWidget {
                     ),
                     labelColor: AppColor.blue,
                     unselectedLabelColor: AppColor.blue,
-                    tabs: [
-                      Tab(text: 'Hall 01: (Ground Floor)'),
-                      Tab(text: 'Hall 02: (First Floor)'),
-                      Tab(text: 'Both Floor'),
-                      Tab(text: 'Hall 03: (Play Room Hall)')
-                    ]
+                    tabs: HallViewModel.hallList.map((e) => Tab(text: e.hallName!)).toList()
                 )
             ),
             Container(
               padding: EdgeInsets.only(right: 20),
-              height: 520,
+              constraints: BoxConstraints.loose(Size(
+                double.infinity,
+                300
+              )),
               child: TabBarView(
-                children: [
-                  HallPricing(),
-                  HallPricing(),
-                  HallPricing(),
-                  HallPricing(),
-                ],
+                children: HallViewModel.hallList.map((e) => HallPricingInfoWidget(hall: e)).toList()
               ),
             )
           ],
         ),
-      ),
+      )
     );
 
     _buildExtraInfo() => Padding(
@@ -169,12 +186,25 @@ class HallScreen extends StatelessWidget {
             ),
             Container(
               padding: EdgeInsets.only(right: 20),
-              height: 320,
+              height: 220,
               child: TabBarView(
                 children: [
-                  Container(),
-                  Container(),
-                  Container(),
+                  Container(
+                    child: Text(
+                      r'''
+Decorator bill per person = 40tk,
+VAT of food for per person = 24 tk
+Gas bill for cooking = 3000 tk, 4000 tk, 5000 tk (varies according to total person)
+I.P. Table = 2000 tk,
+Chair Cover each = 20 tk, 15% VAT is applicable on decorator bill
+Lighting bill for each floor = 10,500 tk
+Honorable club members will get 25% discount on decorator bill and flowering cost
+''',
+                      textAlign: TextAlign.justify,
+                    ),
+                  ),
+                  DecoratorList(),
+                  DecoratorList(),
                 ],
               ),
             )
@@ -312,7 +342,7 @@ class HallScreen extends StatelessWidget {
             )
           ],
         ),
-        body: ListView(
+        body: initLoad ? SpinKitDualRing(color: AppColor.pink) : ListView(
           shrinkWrap: true,
           padding: EdgeInsets.zero,
           children: [
@@ -338,7 +368,7 @@ class HallScreen extends StatelessWidget {
             _buildInfo(),
             _buildHallInfo(),
             _buildHallPricing(),
-            _buildExtraInfo(),
+            // _buildExtraInfo(),
             _buildCalender()
           ],
         )
@@ -346,52 +376,27 @@ class HallScreen extends StatelessWidget {
   }
 }
 
-class HallPricing extends StatelessWidget {
+class DecoratorList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        HallPricingInfo(),
-        HallPricingInfo(),
-        HallPricingInfo(),
-      ],
-    );
-  }
-}
-
-
-class HallPricingInfo extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 12),
-      child: Card(
-        margin: EdgeInsets.zero,
-        child: Container(
-          padding: EdgeInsets.all(8),
-          color: Colors.white,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                'Rent for Social Program (Member Only)',
-                style: TextStyle(
-                  fontSize: 16
-                ),
-              ),
-              SizedBox(height: 8),
-              RowTextWidget(title: 'Rent', subTitle: '145236',alignment: TextAlign.end),
-              RowTextWidget(title: 'Vat', subTitle: '15%',alignment: TextAlign.end),
-              RowTextWidget(title: 'Income Tax', subTitle: '5%',alignment: TextAlign.end),
-              Divider(
-                thickness: 1,
-              ),
-              RowTextWidget(title: 'Total Rent(TK)', subTitle: '123123',alignment: TextAlign.end),
-            ],
+    return Wrap(
+      children: List.generate(4, (index) => ExpansionTile(
+        expandedCrossAxisAlignment: CrossAxisAlignment.start,
+        title: ListTile(
+          leading: Text(
+              (index+1).toString()
+          ),
+          title: Text(
+              'Name of Decorator'
+          ),
+          subtitle: Text(
+              'Location of the decorator'
           ),
         ),
-      ),
+        children: List.generate(4, (index) => Text(
+          '01915949303'
+        )),
+      )),
     );
   }
 }

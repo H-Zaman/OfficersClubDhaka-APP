@@ -1,17 +1,14 @@
-import 'dart:io';
-
-import 'package:dio/adapter.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class APIConfig{
 
   static final _dio = Dio();
-  static final _headers = <String, String>{
-    'Content-Type' : 'application/json',
-    'X-Requested-With' : 'XMLHttpRequest',
-    'Accept' : 'application/json',
-  };
+  // static final _headers = <String, String>{
+  //   'Content-Type' : 'application/json',
+  //   'X-Requested-With' : 'XMLHttpRequest',
+  //   'Accept' : 'application/json',
+  // };
 
   static Dio getClient([String? token]){
     /// not needed as backend does not require authorization
