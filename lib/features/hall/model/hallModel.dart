@@ -1,3 +1,5 @@
+import 'package:officersclubdhaka/features/hall/model/hallRentInfoModel.dart';
+
 class HallModel {
   HallModel({
     this.hallCategoryId,
@@ -10,6 +12,7 @@ class HallModel {
     this.hallFloor,
     this.hallImage,
     this.hallPrice,
+    this.rentInfo
   });
 
   String? hallCategoryId;
@@ -22,6 +25,7 @@ class HallModel {
   String? hallFloor;
   String? hallImage;
   String? hallPrice;
+  List<HallRentInfoModel>? rentInfo;
 
   factory HallModel.fromJson(Map<String, dynamic> json) => HallModel(
     hallCategoryId: json["hall_category_id"],

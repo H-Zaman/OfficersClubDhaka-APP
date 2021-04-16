@@ -1,5 +1,6 @@
 class Images{
   static final appLogo = 'assets/images/ocdLogo.png';
+  static final imagePrefix = 'http://ocd.spectrum.com.bd/images/';
   static final iconCafeteria = 'assets/images/servicesIcons/cafeteria.png';
   static final iconCoupon = 'assets/images/servicesIcons/coupon.png';
   static final iconGuest = 'assets/images/servicesIcons/guest.png';

@@ -5,9 +5,12 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:officersclubdhaka/____demoData.dart';
+import 'package:officersclubdhaka/features/hall/repository/hallRepo.dart';
+import 'package:officersclubdhaka/features/hall/view/hallBookingScreen.dart';
 import 'package:officersclubdhaka/features/hall/viewModel/hallViewModel.dart';
 import 'package:officersclubdhaka/mainApp/util/resources/color.dart';
 import 'package:officersclubdhaka/mainApp/util/resources/strings.dart';
+import 'package:officersclubdhaka/mainApp/util/snack.dart';
 import 'package:paged_vertical_calendar/paged_vertical_calendar.dart';
 
 import 'hallPaymentScreen.dart';
@@ -131,7 +134,7 @@ class _HallScreenState extends State<HallScreen> {
               padding: EdgeInsets.only(right: 20),
               constraints: BoxConstraints.loose(Size(
                 double.infinity,
-                300
+                Get.height * .7
               )),
               child: TabBarView(
                 children: HallViewModel.hallList.map((e) => HallPricingInfoWidget(hall: e)).toList()
@@ -142,76 +145,76 @@ class _HallScreenState extends State<HallScreen> {
       )
     );
 
-    _buildExtraInfo() => Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 8),
-      child: DefaultTabController(
-        length: 3,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              Strings.hallBookingOtherInfoTitle,
-              style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold
-              ),
-            ),
-            SizedBox(height: 4),
-            Container(
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    border: Border(
-                        bottom: BorderSide(
-                            color: Colors.grey.shade200
-                        )
-                    )
-                ),
-                height: 40,
-                child: TabBar(
-                    indicatorColor: AppColor.purple,
-                    isScrollable: true,
-                    indicatorWeight: 3,
-                    labelStyle: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w600
-                    ),
-                    labelColor: AppColor.blue,
-                    unselectedLabelColor: AppColor.blue,
-                    tabs: [
-                      Tab(text: 'Decorator Bill'),
-                      Tab(text: 'Name of Listed Decorator'),
-                      Tab(text: 'Name of Listed Electric Decorator'),
-                    ]
-                )
-            ),
-            Container(
-              padding: EdgeInsets.only(right: 20),
-              height: 220,
-              child: TabBarView(
-                children: [
-                  Container(
-                    child: Text(
-                      r'''
-Decorator bill per person = 40tk,
-VAT of food for per person = 24 tk
-Gas bill for cooking = 3000 tk, 4000 tk, 5000 tk (varies according to total person)
-I.P. Table = 2000 tk,
-Chair Cover each = 20 tk, 15% VAT is applicable on decorator bill
-Lighting bill for each floor = 10,500 tk
-Honorable club members will get 25% discount on decorator bill and flowering cost
-''',
-                      textAlign: TextAlign.justify,
-                    ),
-                  ),
-                  DecoratorList(),
-                  DecoratorList(),
-                ],
-              ),
-            )
-          ],
-        ),
-      ),
-    );
+//     _buildExtraInfo() => Padding(
+//       padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 8),
+//       child: DefaultTabController(
+//         length: 3,
+//         child: Column(
+//           crossAxisAlignment: CrossAxisAlignment.start,
+//           children: [
+//             Text(
+//               Strings.hallBookingOtherInfoTitle,
+//               style: TextStyle(
+//                   fontSize: 20,
+//                   fontWeight: FontWeight.bold
+//               ),
+//             ),
+//             SizedBox(height: 4),
+//             Container(
+//                 decoration: BoxDecoration(
+//                     color: Colors.white,
+//                     border: Border(
+//                         bottom: BorderSide(
+//                             color: Colors.grey.shade200
+//                         )
+//                     )
+//                 ),
+//                 height: 40,
+//                 child: TabBar(
+//                     indicatorColor: AppColor.purple,
+//                     isScrollable: true,
+//                     indicatorWeight: 3,
+//                     labelStyle: TextStyle(
+//                         fontSize: 14,
+//                         fontWeight: FontWeight.w600
+//                     ),
+//                     labelColor: AppColor.blue,
+//                     unselectedLabelColor: AppColor.blue,
+//                     tabs: [
+//                       Tab(text: 'Decorator Bill'),
+//                       Tab(text: 'Name of Listed Decorator'),
+//                       Tab(text: 'Name of Listed Electric Decorator'),
+//                     ]
+//                 )
+//             ),
+//             Container(
+//               padding: EdgeInsets.only(right: 20),
+//               height: 220,
+//               child: TabBarView(
+//                 children: [
+//                   Container(
+//                     child: Text(
+//                       r'''
+// Decorator bill per person = 40tk,
+// VAT of food for per person = 24 tk
+// Gas bill for cooking = 3000 tk, 4000 tk, 5000 tk (varies according to total person)
+// I.P. Table = 2000 tk,
+// Chair Cover each = 20 tk, 15% VAT is applicable on decorator bill
+// Lighting bill for each floor = 10,500 tk
+// Honorable club members will get 25% discount on decorator bill and flowering cost
+// ''',
+//                       textAlign: TextAlign.justify,
+//                     ),
+//                   ),
+//                   DecoratorList(),
+//                   DecoratorList(),
+//                 ],
+//               ),
+//             )
+//           ],
+//         ),
+//       ),
+//     );
 
     _buildCalender() => Container(
         height: 400,
@@ -235,22 +238,23 @@ Honorable club members will get 25% discount on decorator bill and flowering cos
                     child: PagedVerticalCalendar(
                         startDate: DateTime(DateTime.now().year, DateTime.now().month, 1),
                         dayBuilder: (context, date) {
-                          final eventsThisDay = Demo.demoEvents.where((e) => e.time == date);
+                          final eventsThisDay = HallViewModel.hallEvents.where((e) => e.hallBookDate == date);
                           return GestureDetector(
                             onTap: (){
-                              // Get.dialog(Dialog(
-                              //   child: Container(
-                              //     padding: EdgeInsets.all(20),
-                              //     child: Wrap(
-                              //       children: eventsThisDay.map((e) => Text(e.event)).toList(),
-                              //     )
-                              //   ),
-                              // ));
+                              if(eventsThisDay.length < 2){
+                                Get.to(HallBookingScreen(
+                                  hasEvent : eventsThisDay.length > 0 ? eventsThisDay.first.hallShiftType : '',
+                                  dateSelected : date,
+                                ));
+                              }else{
+                                Snack.top('Sorry', 'Fully Booked');
+                              }
                             },
                             child: Container(
                                 decoration: BoxDecoration(
                                   shape: BoxShape.circle,
-                                  color: eventsThisDay.length == 1 ? Colors.amber : eventsThisDay.length == 2 ? Colors.red : Colors.transparent,
+                                  color: eventsThisDay.length == 0 ? Colors.transparent : eventsThisDay.length == 1 ? Colors.amber : Colors.red,
+                                  // color: eventsThisDay.length == 1 ? Colors.amber : eventsThisDay.length == 2 ? Colors.red : Colors.transparent,
                                 ),
                                 margin: EdgeInsets.all(4),
                                 child: Center(
@@ -330,7 +334,9 @@ Honorable club members will get 25% discount on decorator bill and flowering cos
               ),
               margin: EdgeInsets.all(12),
               child: TextButton(
-                onPressed: () => Get.to(()=>HallPaymentScreen()),
+                onPressed: () {
+                  HallRepo.getHallEvents();
+                },
                 child: Text(
                   'Payment',
                   style: TextStyle(
@@ -376,27 +382,27 @@ Honorable club members will get 25% discount on decorator bill and flowering cos
   }
 }
 
-class DecoratorList extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Wrap(
-      children: List.generate(4, (index) => ExpansionTile(
-        expandedCrossAxisAlignment: CrossAxisAlignment.start,
-        title: ListTile(
-          leading: Text(
-              (index+1).toString()
-          ),
-          title: Text(
-              'Name of Decorator'
-          ),
-          subtitle: Text(
-              'Location of the decorator'
-          ),
-        ),
-        children: List.generate(4, (index) => Text(
-          '01915949303'
-        )),
-      )),
-    );
-  }
-}
+// class DecoratorList extends StatelessWidget {
+//   @override
+//   Widget build(BuildContext context) {
+//     return Wrap(
+//       children: List.generate(4, (index) => ExpansionTile(
+//         expandedCrossAxisAlignment: CrossAxisAlignment.start,
+//         title: ListTile(
+//           leading: Text(
+//               (index+1).toString()
+//           ),
+//           title: Text(
+//               'Name of Decorator'
+//           ),
+//           subtitle: Text(
+//               'Location of the decorator'
+//           ),
+//         ),
+//         children: List.generate(4, (index) => Text(
+//           '01915949303'
+//         )),
+//       )),
+//     );
+//   }
+// }
