@@ -1,3 +1,4 @@
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -5,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:officersclubdhaka/____demoData.dart';
 import 'package:officersclubdhaka/features/hall/model/clubMemberModel.dart';
+import 'package:officersclubdhaka/features/hall/model/onHallBookResponse.dart';
 import 'package:officersclubdhaka/features/hall/model/hallModel.dart';
 import 'package:officersclubdhaka/features/hall/model/hallRentInfoModel.dart';
 import 'package:officersclubdhaka/features/hall/repository/hallRepo.dart';
@@ -13,6 +15,7 @@ import 'package:officersclubdhaka/mainApp/util/resources/color.dart';
 import 'package:officersclubdhaka/mainApp/util/resources/images.dart';
 import 'package:officersclubdhaka/mainApp/util/sharedWidgets/screenLoader.dart';
 import 'package:officersclubdhaka/mainApp/util/snack.dart';
+import 'package:officersclubdhaka/mainApp/util/customDialog.dart';
 import 'package:officersclubdhaka/user/viewModel/userViewModel.dart';
 
 import 'widgets/rowTextInfoWidget.dart';
@@ -524,7 +527,7 @@ class _HallBookingScreenState extends State<HallBookingScreen> {
                           loadScreen();
                           Snack.top('Sorry', 'Not available');
                         }else{
-                          bool error2 = await HallRepo.bookHall(
+                          HallBookResponse response = await HallRepo.bookHall(
                             hallId: _bookingHall!,
                             date: DateFormat('yyyy-MM-dd').format(_bookingDate!),
                             shift: _bookShift!,
@@ -537,11 +540,15 @@ class _HallBookingScreenState extends State<HallBookingScreen> {
                             address: _addressController.text,
                           );
                           loadScreen();
-                          if(error2){
+                          if(response.error){
                             Snack.top('Sorry', 'Something went wrong');
                           }else{
                             Get.back();
-                            Snack.top('Success', 'Booking successful');
+                            CustomDialog.dialog(
+                              'Success',
+                              'You booking request has been sent. Your Booking ID: ${response.serial}',
+                              DialogType.SUCCES
+                            );
                           }
                         }
                       }else{
@@ -562,7 +569,7 @@ class _HallBookingScreenState extends State<HallBookingScreen> {
                             loadScreen();
                             Snack.top('Sorry', 'Not available');
                           }else{
-                            bool error2 = await HallRepo.bookHall(
+                            HallBookResponse response = await HallRepo.bookHall(
                               hallId: _bookingHall!,
                               date: DateFormat('yyyy-MM-dd').format(_bookingDate!),
                               shift: _bookShift!,
@@ -575,18 +582,27 @@ class _HallBookingScreenState extends State<HallBookingScreen> {
                               address: _addressController.text,
                             );
                             loadScreen();
-                            if(error2){
+                            if(response.error){
                               Snack.top('Sorry', 'Something went wrong');
                             }else{
                               Get.back();
-                              Snack.top('Success', 'Booking successful');
+                              CustomDialog.dialog(
+                                'Success',
+                                'You booking request has been sent. Your Booking ID: ${response.serial}',
+                                DialogType.SUCCES
+                              );
                             }
                           }
                         }
                       }
                     },
-                    child: Text(
-                        'Book Now'
+                    child: SizedBox(
+                      width: Get.width * .9,
+                      child: Center(
+                        child: Text(
+                            'Book Now'
+                        ),
+                      ),
                     ),
                   )
                 ],

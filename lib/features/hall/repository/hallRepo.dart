@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:officersclubdhaka/features/hall/model/eventMOdel.dart';
+import 'package:officersclubdhaka/features/hall/model/onHallBookResponse.dart';
 import 'package:officersclubdhaka/features/hall/model/hallModel.dart';
 import 'package:officersclubdhaka/features/hall/model/hallRentInfoModel.dart';
 import 'package:officersclubdhaka/features/hall/model/rentCategoryModel.dart';
@@ -97,7 +98,7 @@ class HallRepo{
     }
   }
 
-  static Future<bool> bookHall({
+  static Future<HallBookResponse> bookHall({
     required String hallId,
     required String date,
     required String rentCatId,
@@ -130,13 +131,13 @@ class HallRepo{
 
       Response response = await _client.post(endPoint,data: data);
       if(response.data['status'] == 'success'){
-        return false;
+        return HallBookResponse(error: false, serial: response.data['message']['booking_sl']);
       }else{
-        return true;
+        return HallBookResponse(error: true);
       }
 
     }catch(e){
-      return true;
+      return HallBookResponse(error: true);
     }
   }
 
