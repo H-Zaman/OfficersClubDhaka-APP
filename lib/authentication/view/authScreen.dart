@@ -35,8 +35,8 @@ class AuthScreen extends StatelessWidget {
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8))
         )
       ),
-      emailValidator: (_)=>null,
-      passwordValidator: (_)=>null,
+      idFieldValidator: (val)=>val!.length <1 ? 'Field can not be empty' : null,
+      phoneNumberFieldValidator: (val)=>val!.length != 11 ? 'Phone number must be 11 digits' : null,
       title: 'OCD',
       logo: Images.appLogo,
       logoTag: Images.appLogo,

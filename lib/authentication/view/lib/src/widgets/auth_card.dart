@@ -595,6 +595,7 @@ class _LoginCardState extends State<_LoginCard> with TickerProviderStateMixin {
   Widget _buildPasswordField(double width, LoginMessages messages, Auth auth) {
     return AnimatedPasswordTextFormField(
       animatedWidth: width,
+      prefixText: '+88',
       loadingController: _loadingController,
       interval: _passTextFieldLoadingAnimationInterval,
       labelText: messages.passwordHint,

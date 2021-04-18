@@ -34,6 +34,7 @@ class AnimatedTextFormField extends StatefulWidget {
     this.enabled = true,
     this.labelText,
     this.prefixIcon,
+    this.prefixText,
     this.suffixIcon,
     this.keyboardType,
     this.textInputAction,
@@ -57,6 +58,7 @@ class AnimatedTextFormField extends StatefulWidget {
   final bool autocorrect;
   final Iterable<String>? autofillHints;
   final String? labelText;
+  final String? prefixText;
   final Widget? prefixIcon;
   final Widget? suffixIcon;
   final TextInputType? keyboardType;
@@ -194,6 +196,7 @@ class _AnimatedTextFormFieldState extends State<AnimatedTextFormField> {
   InputDecoration _getInputDecoration(ThemeData theme) {
     return InputDecoration(
       labelText: widget.labelText,
+      prefixText: widget.prefixText,
       prefixIcon: _buildInertiaAnimation(widget.prefixIcon),
       suffixIcon: _buildInertiaAnimation(widget.loadingController != null
           ? FadeTransition(
@@ -264,6 +267,7 @@ class AnimatedPasswordTextFormField extends StatefulWidget {
     this.keyboardType,
     this.textInputAction,
     this.controller,
+    this.prefixText,
     this.focusNode,
     this.validator,
     this.onFieldSubmitted,
@@ -279,6 +283,7 @@ class AnimatedPasswordTextFormField extends StatefulWidget {
   final double animatedWidth;
   final bool enabled;
   final String? labelText;
+  final String? prefixText;
   final TextInputType? keyboardType;
   final TextInputAction? textInputAction;
   final TextEditingController? controller;
@@ -342,6 +347,7 @@ class _AnimatedPasswordTextFormFieldState
       keyboardType: widget.keyboardType,
       textInputAction: widget.textInputAction,
       controller: widget.controller,
+      prefixText: widget.prefixText,
       focusNode: widget.focusNode,
       validator: widget.validator,
       onFieldSubmitted: widget.onFieldSubmitted,
