@@ -42,5 +42,6 @@ flutter:
   assets:
     - assets/images/
     - assets/images/servicesIcons/
+    - assets/images/recreationIcons/
     - assets/images/paymentIcons/
     - .env

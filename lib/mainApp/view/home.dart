@@ -370,7 +370,8 @@ class _HomeState extends State<Home> {
               SliverList(
                   delegate: SliverChildListDelegate([
                     Services(),
-                    LatestNews(),
+                    Recreation(),
+                    EventsAndNews(),
                     SizedBox(height: 12),
                     Offers(),
                     SizedBox(height: 12),
@@ -444,14 +445,10 @@ class Services extends StatelessWidget {
           padding: EdgeInsets.symmetric(horizontal: 20,vertical: 12),
           physics: NeverScrollableScrollPhysics(),
           children: [
-            ItemWidget(title: 'Cafeteria', image: Images.iconCafeteria),
-            ItemWidget(title: 'Salon', image: Images.iconSalon),
-            ItemWidget(title: 'Hall', image: Images.iconHall,route: HallScreen()),
-            ItemWidget(title: 'Pool', image: Images.iconPool),
-            ItemWidget(title: 'Coupon', image: Images.iconCoupon),
-            ItemWidget(title: 'Guest', image: Images.iconGuest),
-            ItemWidget(title: 'Library', image: Images.iconLibrary),
-            ItemWidget(title: 'Laundry', image: Images.iconLaundry),
+            ItemWidget(title: 'Hall', image: Images.iconServicesHall,route: HallScreen()),
+            ItemWidget(title: 'Catering', image: Images.iconServicesCatering),
+            ItemWidget(title: 'Salon', image: Images.iconServicesSalon),
+            ItemWidget(title: 'Laundry', image: Images.iconServicesLaundry),
           ],
         ),
       ],
@@ -459,8 +456,46 @@ class Services extends StatelessWidget {
   }
 }
 
+class Recreation extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(left: 20,top: 12),
+          child: Text(
+            'Recreation',
+            style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.w600
+            ),
+          ),
+        ),
+        GridView.count(
+          shrinkWrap: true,
+          crossAxisCount: 4,
+          mainAxisSpacing: 22,
+          crossAxisSpacing: 12,
+          padding: EdgeInsets.symmetric(horizontal: 20,vertical: 12),
+          physics: NeverScrollableScrollPhysics(),
+          children: [
+            ItemWidget(title: 'Cafeteria', image: Images.iconRecreationCafeteria),
+            ItemWidget(title: 'Guest', image: Images.iconRecreationGuest),
+            ItemWidget(title: 'Library', image: Images.iconRecreationLibrary),
+            ItemWidget(title: 'Cyber Cafe', image: Images.iconRecreationCyberCafe),
+            ItemWidget(title: 'House', image: Images.iconRecreationHouse),
+            ItemWidget(title: 'TV Lounge', image: Images.iconRecreationLounge),
+            ItemWidget(title: 'Kids Valley', image: Images.iconRecreationKidsValley),
+            ItemWidget(title: 'Others', image: Images.iconRecreationOther),
+          ],
+        ),
+      ],
+    );
+  }
+}
 
-class LatestNews extends StatelessWidget {
+class EventsAndNews extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -469,7 +504,7 @@ class LatestNews extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.only(left: 20),
           child: Text(
-            'Latest News',
+            'Events & News',
             style: TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.w600
@@ -565,7 +600,7 @@ class Offers extends StatelessWidget {
               ),
               ItemWidget(
                 title: 'OCD',
-                image: Images.iconCafeteria,
+                image: Images.iconRecreationCafeteria,
               ),
             ],
           ),

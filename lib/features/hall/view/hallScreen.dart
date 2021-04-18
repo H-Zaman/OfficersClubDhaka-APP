@@ -29,8 +29,12 @@ class _HallScreenState extends State<HallScreen> {
 
   @override
   void initState() {
-    super.initState();
-    getData();
+    if(mounted){
+      getData();
+      super.initState();
+    }else{
+      return ;
+    }
   }
 
   @override
