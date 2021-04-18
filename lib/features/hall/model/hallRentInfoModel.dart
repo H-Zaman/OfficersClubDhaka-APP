@@ -24,7 +24,7 @@ class HallRentInfoModel {
   factory HallRentInfoModel.fromJson(Map<String, dynamic> json) => HallRentInfoModel(
     hallRentAssignId: json["hall_rent_assign_id"],
     hallRentCategoryId: json["hall_rent_category_id"],
-    rentType: json["rent_type"] == '1' ? 'Members Only' : 'Other than members',
+    rentType: json["rent_type"],
     hallCategoryId: json["hall_category_id"],
     rentAmount: json["rent_amount"],
     rentVatPercentage: json["rent_vat_percentage"],

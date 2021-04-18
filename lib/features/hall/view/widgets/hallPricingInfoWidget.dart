@@ -1,8 +1,11 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:officersclubdhaka/____demoData.dart';
 import 'package:officersclubdhaka/features/hall/model/hallModel.dart';
+import 'package:officersclubdhaka/features/hall/view/widgets/hallEventCalender.dart';
 import 'package:officersclubdhaka/features/hall/view/widgets/rowTextInfoWidget.dart';
+import 'package:officersclubdhaka/features/hall/viewModel/hallViewModel.dart';
 import 'package:officersclubdhaka/mainApp/util/resources/images.dart';
 
 class HallPricingInfoWidget extends StatelessWidget {
@@ -15,13 +18,31 @@ class HallPricingInfoWidget extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        AspectRatio(
-          aspectRatio: 16/9,
-          child: CachedNetworkImage(
-            // imageUrl: Demo.hall,
-            imageUrl: hall.hallImage != null ? Images.imagePrefix+hall.hallImage! : Demo.hall,
-            fit: BoxFit.cover,
-          ),
+        Stack(
+          children: [
+            AspectRatio(
+              aspectRatio: 16/9,
+              child: CachedNetworkImage(
+                // imageUrl: Demo.hall,
+                imageUrl: hall.hallImage != null ? Images.imagePrefix+hall.hallImage! : Demo.hall,
+                fit: BoxFit.cover,
+              ),
+            ),
+            Positioned(
+              right: 4,
+              bottom: 4,
+              child: ElevatedButton(
+                onPressed: (){
+                  Get.bottomSheet(HallEventCalender(
+                    hall: hall,
+                    events: HallViewModel.hallEvents.where((element) => element.hallCategoryId == hall.hallCategoryId).toList()));
+                },
+                child: Text(
+                  'Book Now'
+                ),
+              ),
+            )
+          ],
         ),
         SizedBox(height: 4),
         if(hall.hallSize != null) RowTextWidget(title: 'Hall Size', subTitle: hall.hallSize!),
@@ -32,7 +53,7 @@ class HallPricingInfoWidget extends StatelessWidget {
           children: hall.rentInfo!.map((e) => ListTile(
             contentPadding: EdgeInsets.zero,
             title: Text(
-                e.hallRentCategory!.hallRentCategoryName + ' (${e.rentType!})'
+                e.hallRentCategory!.hallRentCategoryName + ' (${e.rentType! == '1' ? 'Members Only' : 'Other than members'})'
             ),
             subtitle: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -46,7 +67,8 @@ class HallPricingInfoWidget extends StatelessWidget {
               ],
             ),
           )).toList(),
-        )
+        ),
+        SizedBox(height: 8)
       ],
     );
   }

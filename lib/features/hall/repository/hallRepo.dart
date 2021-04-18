@@ -102,18 +102,30 @@ class HallRepo{
     required String date,
     required String rentCatId,
     required String shift,
-    required String bookPrice
+    required String bookPrice,
+    required int memberType,
+    required String? name,
+    required String? mobile,
+    required String? nid,
+    required String? address,
   }) async{
     try{
       final endPoint = APIConfig.getEndPoint('/HallBookingSave');
 
       final data = {
         'hall_category_id' : hallId,
-        'member_id' : UserViewModel.user.value.memberId,
+        'member_id' : memberType == 1 ? UserViewModel.user.value.memberId : null,
         'hall_book_date' : date,
         'hall_rent_category_id' : rentCatId,
         'hall_shift_type' : shift,
         'booking_price' : bookPrice,
+        ///disabled for now
+        // 'booking_purpose' : bookPrice,
+        'booking_type': memberType,
+        'booker_full_name' : name,
+        'booker_mobile' : mobile,
+        'booker_nid' : nid,
+        'booker_current_addres' : address,
       };
 
       Response response = await _client.post(endPoint,data: data);

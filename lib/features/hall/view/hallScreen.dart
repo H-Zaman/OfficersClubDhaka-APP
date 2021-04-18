@@ -3,17 +3,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
 import 'package:officersclubdhaka/____demoData.dart';
 import 'package:officersclubdhaka/features/hall/repository/hallRepo.dart';
-import 'package:officersclubdhaka/features/hall/view/hallBookingScreen.dart';
 import 'package:officersclubdhaka/features/hall/viewModel/hallViewModel.dart';
 import 'package:officersclubdhaka/mainApp/util/resources/color.dart';
 import 'package:officersclubdhaka/mainApp/util/resources/strings.dart';
-import 'package:officersclubdhaka/mainApp/util/snack.dart';
-import 'package:paged_vertical_calendar/paged_vertical_calendar.dart';
-
-import 'hallPaymentScreen.dart';
 import 'widgets/hallPricingInfoWidget.dart';
 import 'widgets/rowTextInfoWidget.dart';
 
@@ -145,6 +139,75 @@ class _HallScreenState extends State<HallScreen> {
       )
     );
 
+    return Scaffold(
+        extendBodyBehindAppBar: true,
+        appBar: AppBar(
+          leading: Card(
+            color: Colors.black12,
+            child: IconButton(
+                onPressed: Get.back,
+                icon: Icon(
+                  CupertinoIcons.arrow_left,
+                  color: Colors.white,
+                )
+            ),
+          ),
+          actions: [
+            Container(
+              decoration: BoxDecoration(
+                  color: AppColor.purple,
+                  borderRadius: BorderRadius.circular(4)
+              ),
+              margin: EdgeInsets.all(12),
+              child: TextButton(
+                onPressed: () {
+                  HallRepo.getHallEvents();
+                },
+                child: Text(
+                  'Payment',
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold
+                  ),
+                ),
+              ),
+            )
+          ],
+        ),
+        body: initLoad ? SpinKitDualRing(color: AppColor.pink) : ListView(
+          shrinkWrap: true,
+          padding: EdgeInsets.zero,
+          children: [
+            AspectRatio(
+              aspectRatio: 60/36,
+              child: Container(
+                  decoration: BoxDecoration(
+                      image: DecorationImage(
+                          image: CachedNetworkImageProvider(
+                              Demo.hall
+                          ),
+                          fit: BoxFit.cover
+                      ),
+                      gradient: LinearGradient(
+                          colors: [
+                            AppColor.blue,
+                            AppColor.purple,
+                          ]
+                      )
+                  )
+              ),
+            ),
+            _buildInfo(),
+            _buildHallInfo(),
+            _buildHallPricing()
+          ],
+        )
+    );
+  }
+}
+
+
+/// this was built to show decorator info unfortunately currently it is disabled
 //     _buildExtraInfo() => Padding(
 //       padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 8),
 //       child: DefaultTabController(
@@ -215,173 +278,6 @@ class _HallScreenState extends State<HallScreen> {
 //         ),
 //       ),
 //     );
-
-    _buildCalender() => Container(
-        height: 400,
-        margin: EdgeInsets.symmetric(horizontal: 20,vertical: 4),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              Strings.hallBookingCalenderTitle,
-              style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold
-              ),
-            ),
-            SizedBox(height: 8),
-            Expanded(
-              child: Stack(
-                children: [
-                  Container(
-                    color: Colors.white,
-                    child: PagedVerticalCalendar(
-                        startDate: DateTime(DateTime.now().year, DateTime.now().month, 1),
-                        dayBuilder: (context, date) {
-                          final eventsThisDay = HallViewModel.hallEvents.where((e) => e.hallBookDate == date);
-                          return GestureDetector(
-                            onTap: (){
-                              if(eventsThisDay.length < 2){
-                                Get.to(HallBookingScreen(
-                                  hasEvent : eventsThisDay.length > 0 ? eventsThisDay.first.hallShiftType : '',
-                                  dateSelected : date,
-                                ));
-                              }else{
-                                Snack.top('Sorry', 'Fully Booked');
-                              }
-                            },
-                            child: Container(
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  color: eventsThisDay.length == 0 ? Colors.transparent : eventsThisDay.length == 1 ? Colors.amber : Colors.red,
-                                  // color: eventsThisDay.length == 1 ? Colors.amber : eventsThisDay.length == 2 ? Colors.red : Colors.transparent,
-                                ),
-                                margin: EdgeInsets.all(4),
-                                child: Center(
-                                    child: Text(
-                                      DateFormat('d').format(date),
-                                      style: TextStyle(
-                                        color: eventsThisDay.length > 0 ? Colors.white : Colors.black,
-                                        fontWeight: eventsThisDay.length > 0 ? FontWeight.bold : FontWeight.normal,
-                                      ),
-                                    )
-                                )
-                            ),
-                          );
-                        }
-                    ),
-                  ),
-
-                  Positioned(
-                    top: 20,
-                    left: 0,
-                    child: Row(
-                      children: [
-                        Container(
-                          height: 10,
-                          width: 20,
-                          color: Colors.amber,
-                        ),
-                        Text(
-                          ' Partially Booked',
-                          style: TextStyle(
-                              fontSize: 12
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                  Row(
-                    children: [
-                      Container(
-                        height: 10,
-                        width: 20,
-                        color: Colors.red,
-                      ),
-                      Text(
-                        ' Fully Booked',
-                        style: TextStyle(
-                            fontSize: 12
-                        ),
-                      )
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          ],
-        )
-    );
-
-    return Scaffold(
-        extendBodyBehindAppBar: true,
-        appBar: AppBar(
-          leading: Card(
-            color: Colors.black12,
-            child: IconButton(
-                onPressed: Get.back,
-                icon: Icon(
-                  CupertinoIcons.arrow_left,
-                  color: Colors.white,
-                )
-            ),
-          ),
-          actions: [
-            Container(
-              decoration: BoxDecoration(
-                  color: AppColor.purple,
-                  borderRadius: BorderRadius.circular(4)
-              ),
-              margin: EdgeInsets.all(12),
-              child: TextButton(
-                onPressed: () {
-                  HallRepo.getHallEvents();
-                },
-                child: Text(
-                  'Payment',
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold
-                  ),
-                ),
-              ),
-            )
-          ],
-        ),
-        body: initLoad ? SpinKitDualRing(color: AppColor.pink) : ListView(
-          shrinkWrap: true,
-          padding: EdgeInsets.zero,
-          children: [
-            AspectRatio(
-              aspectRatio: 60/36,
-              child: Container(
-                  decoration: BoxDecoration(
-                      image: DecorationImage(
-                          image: CachedNetworkImageProvider(
-                              Demo.hall
-                          ),
-                          fit: BoxFit.cover
-                      ),
-                      gradient: LinearGradient(
-                          colors: [
-                            AppColor.blue,
-                            AppColor.purple,
-                          ]
-                      )
-                  )
-              ),
-            ),
-            _buildInfo(),
-            _buildHallInfo(),
-            _buildHallPricing(),
-            // _buildExtraInfo(),
-            _buildCalender()
-          ],
-        )
-    );
-  }
-}
-
 // class DecoratorList extends StatelessWidget {
 //   @override
 //   Widget build(BuildContext context) {

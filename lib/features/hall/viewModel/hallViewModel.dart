@@ -16,4 +16,10 @@ class HallViewModel{
     hallList = await HallRepo.getHalls();
     hallEvents = await HallRepo.getHallEvents();
   }
+
+
+  static final hallBookShifts = <String>[
+    'Day Shift: 10 am to 4 pm',
+    'Night Shift: 5 pm to 11 pm',
+  ];
 }
