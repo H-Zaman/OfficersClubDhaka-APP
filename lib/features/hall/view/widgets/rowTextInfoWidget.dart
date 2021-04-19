@@ -4,8 +4,16 @@ class RowTextWidget extends StatelessWidget {
   final String title;
   final String subTitle;
   final TextAlign alignment;
+  final Color? textColor;
+  final double? size;
 
-  const RowTextWidget({Key? key,required this.title,required this.subTitle, this.alignment = TextAlign.start}) : super(key: key);
+  const RowTextWidget({Key? key,
+    required this.title,
+    required this.subTitle,
+    this.alignment = TextAlign.start,
+    this.textColor = Colors.black,
+    this.size = 14
+  }) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -21,29 +29,33 @@ class RowTextWidget extends StatelessWidget {
                     child: Text(
                       title,
                       style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.bold
+                        fontSize: size,
+                        fontWeight: FontWeight.bold,
+                        color: textColor
                       ),
                     ),
                   ),
                   Text(
                     ':  ',
                     style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.bold
+                      fontSize: size,
+                      fontWeight: FontWeight.bold,
+                      color: textColor
                     ),
                   )
                 ],
               ),
             ),
             Expanded(
-                flex: 63,
-                child: Text(
-                  subTitle,
-                  textAlign: alignment,
-                  style: TextStyle(
-                  ),
-                )
+              flex: 63,
+              child: Text(
+                subTitle,
+                textAlign: alignment,
+                style: TextStyle(
+                  fontSize: size,
+                  color: textColor
+                ),
+              )
             )
           ]
       ),

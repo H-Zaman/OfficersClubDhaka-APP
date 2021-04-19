@@ -5,7 +5,6 @@ import 'package:officersclubdhaka/features/memberList/repository/memberRepo.dart
 import 'package:officersclubdhaka/features/memberList/view/widgets/memberListTile.dart';
 import 'package:officersclubdhaka/features/memberList/viewModel/memberViewModel.dart';
 import 'package:officersclubdhaka/mainApp/util/resources/color.dart';
-import 'package:officersclubdhaka/user/model/userModel.dart';
 
 class MemberListScreen extends StatefulWidget {
   @override
@@ -127,10 +126,7 @@ class _MemberListScreenState extends State<MemberListScreen> {
                             shrinkWrap: true,
                             padding: EdgeInsets.zero,
                             itemCount: tempList.length,
-                            itemBuilder: (_, index) {
-                              UserModel user = tempList[index];
-                              return MemberListTile(user : user);
-                            },
+                            itemBuilder: (_, index)=> MemberListTile(member : tempList[index])
                           );
                         });
                       }else{

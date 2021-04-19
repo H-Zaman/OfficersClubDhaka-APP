@@ -546,7 +546,7 @@ class _HallBookingScreenState extends State<HallBookingScreen> {
                             Get.back();
                             CustomDialog.dialog(
                               'Success',
-                              'You booking request has been sent. Your Booking ID: ${response.serial}',
+                              'You booking request has been sent. Your Booking Serial No: ${response.bookingSerial}, and Booking ID: ${response.bookingId}',
                               DialogType.SUCCES
                             );
                           }
@@ -588,7 +588,7 @@ class _HallBookingScreenState extends State<HallBookingScreen> {
                               Get.back();
                               CustomDialog.dialog(
                                 'Success',
-                                'You booking request has been sent. Your Booking ID: ${response.serial}',
+                                'You booking request has been sent. Your Booking Serial No: ${response.bookingSerial}, and Booking ID: ${response.bookingId}',
                                 DialogType.SUCCES
                               );
                             }

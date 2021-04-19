@@ -1,30 +1,32 @@
 import 'package:flutter/material.dart';
+import 'package:officersclubdhaka/features/memberList/view/memberProfileScreen.dart';
 import 'package:officersclubdhaka/mainApp/util/resources/color.dart';
 import 'package:officersclubdhaka/user/model/userModel.dart';
 import 'package:officersclubdhaka/user/viewModel/usreBackUp.dart';
 import 'package:get/get.dart';
 
 class MemberListTile extends StatelessWidget {
-  final UserModel user;
+  final UserModel member;
 
-  const MemberListTile({Key? key,required this.user}) : super(key: key);
+  const MemberListTile({Key? key,required this.member}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 12),
       child: ListTile(
+        onTap: () => Get.to(()=>MemberProfileScreen(member: member)),
         leading: CircleAvatar(
           radius: 23,
           backgroundColor: AppColor.pink,
           child: CircleAvatar(
               radius: 21,
               backgroundImage: NetworkImage(
-                  user.image ?? BackUpData.profileImage
+                  member.image ?? BackUpData.profileImage
               )
           ),
         ),
         title: Text(
-          user.fullNameEnglish!,
+          member.fullNameEnglish!,
           style: TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.bold
@@ -34,13 +36,13 @@ class MemberListTile extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              user.mobile!,
+              member.mobile!,
               style: TextStyle(
                   fontSize: 16
               ),
             ),
             Text(
-                user.cadreName!.trim().capitalize!
+                member.cadreName!.trim().capitalize!
             )
           ],
         ),

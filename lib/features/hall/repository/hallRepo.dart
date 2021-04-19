@@ -44,7 +44,6 @@ class HallRepo{
 
       final endPoint = APIConfig.getEndPoint('/HallBookingInfoAll');
       Response response = await _client.get(endPoint);
-      print(response.data['hallInfo'].length);
       if(response.data['status'] == 'success'){
         return List.from(response.data['hallInfo'].map((hallInfo)=>HallEventModel.fromJson(hallInfo)));
       }else{
@@ -113,7 +112,7 @@ class HallRepo{
     try{
       final endPoint = APIConfig.getEndPoint('/HallBookingSave');
 
-      final data = {
+      final memberData = {
         'hall_category_id' : hallId,
         'member_id' : memberType == 1 ? UserViewModel.user.value.memberId : null,
         'hall_book_date' : date,
@@ -121,7 +120,18 @@ class HallRepo{
         'hall_shift_type' : shift,
         'booking_price' : bookPrice,
         ///disabled for now
-        // 'booking_purpose' : bookPrice,
+        // 'booking_purpose' : booking_purpose,
+        'booking_type': memberType,
+      };
+
+      final generalData = {
+        'hall_category_id' : hallId,
+        'hall_book_date' : date,
+        'hall_rent_category_id' : rentCatId,
+        'hall_shift_type' : shift,
+        'booking_price' : bookPrice,
+        ///disabled for now
+        // 'booking_purpose' : booking_purpose,
         'booking_type': memberType,
         'booker_full_name' : name,
         'booker_mobile' : mobile,
@@ -129,9 +139,9 @@ class HallRepo{
         'booker_current_addres' : address,
       };
 
-      Response response = await _client.post(endPoint,data: data);
+      Response response = await _client.post(endPoint,data: memberType == 1 ? memberData : generalData);
       if(response.data['status'] == 'success'){
-        return HallBookResponse(error: false, serial: response.data['message']['booking_sl']);
+        return HallBookResponse(error: false, bookingSerial: response.data['message']['booking_sl'], bookingId: response.data['message']['hall_booking_id']);
       }else{
         return HallBookResponse(error: true);
       }

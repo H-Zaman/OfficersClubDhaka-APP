@@ -5,6 +5,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:officersclubdhaka/____demoData.dart';
 import 'package:officersclubdhaka/features/hall/repository/hallRepo.dart';
+import 'package:officersclubdhaka/features/hall/view/hallPaymentScreen.dart';
 import 'package:officersclubdhaka/features/hall/viewModel/hallViewModel.dart';
 import 'package:officersclubdhaka/mainApp/util/resources/color.dart';
 import 'package:officersclubdhaka/mainApp/util/resources/strings.dart';
@@ -165,7 +166,7 @@ class _HallScreenState extends State<HallScreen> {
               margin: EdgeInsets.all(12),
               child: TextButton(
                 onPressed: () {
-                  HallRepo.getHallEvents();
+                  Get.to(()=>HallPaymentScreen());
                 },
                 child: Text(
                   'Payment',

@@ -1,5 +1,6 @@
 class HallBookResponse{
-  String? serial;
+  String? bookingSerial;
+  String? bookingId;
   bool error;
-  HallBookResponse({this.serial,required this.error});
+  HallBookResponse({this.bookingSerial,required this.error, this.bookingId});
 }
