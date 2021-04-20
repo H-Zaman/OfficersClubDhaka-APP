@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:officersclubdhaka/features/memberList/view/memberProfileScreen.dart';
 import 'package:officersclubdhaka/mainApp/util/resources/color.dart';
+import 'package:officersclubdhaka/mainApp/util/resources/images.dart';
 import 'package:officersclubdhaka/user/model/userModel.dart';
 import 'package:officersclubdhaka/user/viewModel/usreBackUp.dart';
 import 'package:get/get.dart';
@@ -21,7 +22,7 @@ class MemberListTile extends StatelessWidget {
           child: CircleAvatar(
               radius: 21,
               backgroundImage: NetworkImage(
-                  member.image ?? BackUpData.profileImage
+                  member.image != null ? Images.imagePrefix+member.image : BackUpData.profileImage
               )
           ),
         ),

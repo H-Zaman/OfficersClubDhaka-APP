@@ -28,6 +28,8 @@ class AuthCard extends StatefulWidget {
     this.padding = const EdgeInsets.all(0),
     this.loadingController,
     this.emailValidator,
+    required this.idController,
+    required this.mobileController,
     this.passwordValidator,
     this.onSubmit,
     this.onSubmitCompleted,
@@ -45,6 +47,8 @@ class AuthCard extends StatefulWidget {
   final bool hideForgotPasswordButton;
   final bool hideSignUpButton;
   final bool loginAfterSignUp;
+  final TextEditingController idController;
+  final TextEditingController mobileController;
 
   @override
   AuthCardState createState() => AuthCardState();
@@ -291,6 +295,8 @@ class AuthCardState extends State<AuthCard> with TickerProviderStateMixin {
               ? _buildLoadingAnimator(
                   theme: theme,
                   child: _LoginCard(
+                    idController: widget.idController,
+                    mobileController: widget.mobileController,
                     key: _cardKey,
                     loadingController: _isLoadingFirstTime
                         ? _formLoadingController
@@ -349,6 +355,8 @@ class _LoginCard extends StatefulWidget {
     this.hideForgotPasswordButton = false,
     this.hideSignUpButton = false,
     this.loginAfterSignUp = true,
+    required this.idController,
+    required this.mobileController,
   }) : super(key: key);
 
   final AnimationController? loadingController;
@@ -360,6 +368,8 @@ class _LoginCard extends StatefulWidget {
   final bool hideForgotPasswordButton;
   final bool hideSignUpButton;
   final bool loginAfterSignUp;
+  final TextEditingController idController;
+  final TextEditingController mobileController;
 
   @override
   _LoginCardState createState() => _LoginCardState();
@@ -400,8 +410,8 @@ class _LoginCardState extends State<_LoginCard> with TickerProviderStateMixin {
     super.initState();
 
     final auth = Provider.of<Auth>(context, listen: false);
-    _nameController = TextEditingController(text: auth.email);
-    _passController = TextEditingController(text: auth.password);
+    _nameController = TextEditingController(text: widget.idController.text);
+    _passController = TextEditingController(text: widget.mobileController.text);
     _confirmPassController = TextEditingController(text: auth.confirmPassword);
 
     _loadingController = widget.loadingController ??

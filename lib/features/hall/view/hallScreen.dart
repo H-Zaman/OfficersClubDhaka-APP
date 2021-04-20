@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:officersclubdhaka/____demoData.dart';
-import 'package:officersclubdhaka/features/hall/repository/hallRepo.dart';
 import 'package:officersclubdhaka/features/hall/view/hallPaymentScreen.dart';
 import 'package:officersclubdhaka/features/hall/viewModel/hallViewModel.dart';
 import 'package:officersclubdhaka/mainApp/util/resources/color.dart';
@@ -55,7 +54,8 @@ class _HallScreenState extends State<HallScreen> {
           ),
           SizedBox(height: 4),
           Text(
-              Strings.hallBookingInfo
+            Strings.hallBookingInfo,
+            textAlign: TextAlign.justify,
           ),
         ],
       ),

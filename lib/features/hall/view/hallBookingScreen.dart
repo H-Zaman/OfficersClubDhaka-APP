@@ -2,6 +2,7 @@ import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:officersclubdhaka/____demoData.dart';
@@ -15,7 +16,6 @@ import 'package:officersclubdhaka/mainApp/util/resources/color.dart';
 import 'package:officersclubdhaka/mainApp/util/resources/images.dart';
 import 'package:officersclubdhaka/mainApp/util/sharedWidgets/screenLoader.dart';
 import 'package:officersclubdhaka/mainApp/util/snack.dart';
-import 'package:officersclubdhaka/mainApp/util/customDialog.dart';
 import 'package:officersclubdhaka/user/viewModel/userViewModel.dart';
 
 import 'widgets/rowTextInfoWidget.dart';
@@ -218,7 +218,37 @@ class _HallBookingScreenState extends State<HallBookingScreen> {
                   /// normal member info
 
                   AnimatedCrossFade(
-                    firstChild: SizedBox(),
+                    firstChild: UserViewModel.user.value.nid != null ? Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'NID no:',
+                          style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold
+                          ),
+                        ),
+                        SizedBox(height: 8),
+                        Container(
+                          decoration: BoxDecoration(
+                              color: Colors.grey.shade200,
+                              borderRadius: BorderRadius.circular(4)
+                          ),
+                          padding: EdgeInsets.symmetric(horizontal: 12),
+                          child: TextFormField(
+                            enabled: false,
+                            initialValue: UserViewModel.user.value.nid,
+                            decoration: InputDecoration(
+                                border: OutlineInputBorder(
+                                    borderSide: BorderSide.none
+                                ),
+                                contentPadding: EdgeInsets.symmetric(vertical: 4)
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: 12),
+                      ],
+                    ) : SizedBox(),
                     secondChild: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -236,8 +266,12 @@ class _HallBookingScreenState extends State<HallBookingScreen> {
                               borderRadius: BorderRadius.circular(4)
                           ),
                           padding: EdgeInsets.symmetric(horizontal: 12),
-                          child: TextField(
+                          child: TextFormField(
                             controller: _nidController,
+                            inputFormatters: [
+                              FilteringTextInputFormatter.digitsOnly
+                            ],
+                            keyboardType: TextInputType.number,
                             decoration: InputDecoration(
                                 border: OutlineInputBorder(
                                     borderSide: BorderSide.none
@@ -253,7 +287,37 @@ class _HallBookingScreenState extends State<HallBookingScreen> {
                     duration: Duration(milliseconds: 300)
                   ),
                   AnimatedCrossFade(
-                    firstChild: SizedBox(),
+                    firstChild: UserViewModel.user.value.mobile != null ? Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Mobile no:',
+                          style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold
+                          ),
+                        ),
+                        SizedBox(height: 8),
+                        Container(
+                          decoration: BoxDecoration(
+                              color: Colors.grey.shade200,
+                              borderRadius: BorderRadius.circular(4)
+                          ),
+                          padding: EdgeInsets.symmetric(horizontal: 12),
+                          child: TextFormField(
+                            enabled: false,
+                            initialValue: UserViewModel.user.value.mobile,
+                            decoration: InputDecoration(
+                                border: OutlineInputBorder(
+                                    borderSide: BorderSide.none
+                                ),
+                                contentPadding: EdgeInsets.symmetric(vertical: 4)
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: 12),
+                      ],
+                    ) : SizedBox(),
                     secondChild: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -272,6 +336,10 @@ class _HallBookingScreenState extends State<HallBookingScreen> {
                           ),
                           padding: EdgeInsets.symmetric(horizontal: 12),
                           child: TextField(
+                            inputFormatters: [
+                              FilteringTextInputFormatter.digitsOnly
+                            ],
+                            keyboardType: TextInputType.number,
                             controller: _mobileController,
                             decoration: InputDecoration(
                                 border: OutlineInputBorder(
@@ -286,6 +354,37 @@ class _HallBookingScreenState extends State<HallBookingScreen> {
                     ),
                     crossFadeState: _memberType != 2 ? CrossFadeState.showFirst : CrossFadeState.showSecond,
                     duration: Duration(milliseconds: 300)
+                  ),
+                  if(UserViewModel.user.value.mobile != null && _memberType == 1) Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Email:',
+                        style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold
+                        ),
+                      ),
+                      SizedBox(height: 8),
+                      Container(
+                        decoration: BoxDecoration(
+                            color: Colors.grey.shade200,
+                            borderRadius: BorderRadius.circular(4)
+                        ),
+                        padding: EdgeInsets.symmetric(horizontal: 12),
+                        child: TextFormField(
+                          enabled: false,
+                          initialValue: UserViewModel.user.value.email,
+                          decoration: InputDecoration(
+                              border: OutlineInputBorder(
+                                  borderSide: BorderSide.none
+                              ),
+                              contentPadding: EdgeInsets.symmetric(vertical: 4)
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 12),
+                    ],
                   ),
                   AnimatedCrossFade(
                     firstChild: SizedBox(),
@@ -544,18 +643,30 @@ class _HallBookingScreenState extends State<HallBookingScreen> {
                             Snack.top('Sorry', 'Something went wrong');
                           }else{
                             Get.back();
-                            CustomDialog.dialog(
-                              'Success',
-                              'You booking request has been sent. Your Booking Serial No: ${response.bookingSerial}, and Booking ID: ${response.bookingId}',
-                              DialogType.SUCCES
-                            );
+                            AwesomeDialog(
+                                context: context,
+                                title: 'Success',
+                                desc: 'You booking request has been sent. Your Booking Serial No: ${response.bookingSerial}',/*, and Booking ID: ${response.bookingId}*/
+                                dialogType: DialogType.SUCCES,
+                                btnOk: ElevatedButton(
+                                  style: ElevatedButton.styleFrom(primary: Color(0xff00CA72)),
+                                  onPressed: (){
+                                    Get.back();
+                                  },
+                                  child: Text(
+                                    'Close'
+                                  ),
+                                )
+                            )..show();
                           }
                         }
                       }else{
                         if(_nameController.text.isEmpty){
                           Snack.top('Wait', 'Please enter a name');
-                        } else if(_nidController.text.isEmpty){
-                          Snack.top('Wait', 'Please enter NID number');
+                        } else if(_nidController.text.isEmpty || _nidController.text.length < 10){
+                          Snack.top('Wait', 'Please enter a valid NID number');
+                        } else if(_mobileController.text.isEmpty || _mobileController.text.length < 11 || _mobileController.text.length > 14){
+                          Snack.top('Wait', 'Please enter a valid Mobile number');
                         } else if(_addressController.text.isEmpty){
                           Snack.top('Wait', 'Please enter address');
                         } else{
@@ -586,11 +697,21 @@ class _HallBookingScreenState extends State<HallBookingScreen> {
                               Snack.top('Sorry', 'Something went wrong');
                             }else{
                               Get.back();
-                              CustomDialog.dialog(
-                                'Success',
-                                'You booking request has been sent. Your Booking Serial No: ${response.bookingSerial}, and Booking ID: ${response.bookingId}',
-                                DialogType.SUCCES
-                              );
+                              AwesomeDialog(
+                                context: context,
+                                title: 'Success',
+                                desc: 'You booking request has been sent. Your Booking Serial No: ${response.bookingSerial}',/*, and Booking ID: ${response.bookingId}*/
+                                dialogType: DialogType.SUCCES,
+                                btnOk: ElevatedButton(
+                                  style: ElevatedButton.styleFrom(primary: Color(0xff00CA72)),
+                                  onPressed: (){
+                                    Get.back();
+                                  },
+                                  child: Text(
+                                      'Close'
+                                  ),
+                                )
+                              )..show();
                             }
                           }
                         }

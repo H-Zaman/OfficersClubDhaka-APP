@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:officersclubdhaka/authentication/view/authScreen.dart';
 import 'package:officersclubdhaka/mainApp/util/resources/color.dart';
 import 'package:officersclubdhaka/mainApp/util/resources/images.dart';
@@ -14,7 +15,12 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    Future.delayed(Duration(seconds: 2),()=>Get.to(()=>AuthScreen()));
+    getData();
+  }
+
+  getData() async{
+    var data = await GetStorage().read('userInfo');
+    Future.delayed(Duration(seconds: 2),()=>Get.to(()=>AuthScreen(data: data)));
   }
 
   @override

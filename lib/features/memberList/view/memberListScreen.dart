@@ -5,6 +5,7 @@ import 'package:officersclubdhaka/features/memberList/repository/memberRepo.dart
 import 'package:officersclubdhaka/features/memberList/view/widgets/memberListTile.dart';
 import 'package:officersclubdhaka/features/memberList/viewModel/memberViewModel.dart';
 import 'package:officersclubdhaka/mainApp/util/resources/color.dart';
+import 'package:officersclubdhaka/user/model/userModel.dart';
 
 class MemberListScreen extends StatefulWidget {
   @override
@@ -15,13 +16,22 @@ class _MemberListScreenState extends State<MemberListScreen> {
 
   ScrollController _scrollController = ScrollController();
 
-  @override
-  void initState() {
-    super.initState();
+  getData() async{
+    MemberRepo.getMemberList();
     MemberViewModel.members.clear();
     MemberViewModel.dataLoading(false);
     MemberViewModel.nextPageLink = null;
     _scrollController..addListener(_scrollListener);
+    setState(() {
+      pageLoad = false;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getData();
+
   }
   /// TRIGGERS WHEN SCROLLED TO END OF LIST
   _scrollListener(){
@@ -41,6 +51,9 @@ class _MemberListScreenState extends State<MemberListScreen> {
     _showSearch.value = !_showSearch.value;
     FocusScope.of(context).unfocus();
   }
+
+  bool pageLoad = true;
+
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -103,37 +116,47 @@ class _MemberListScreenState extends State<MemberListScreen> {
               SizedBox(width: 14,)
             ],
           ),
-          body: Container(
+          body: pageLoad ? SpinKitDualRing(color: AppColor.purple) : Container(
             color: Colors.white,
             child: Column(
               children: [
                 Expanded(
-                  child: FutureBuilder(
-                    future: MemberRepo.getMemberList(),
-                    builder: (_, AsyncSnapshot<bool>snapshot){
-
-                      if(snapshot.hasData && snapshot.data != null){
-                        return Obx((){
-                          final tempList = [];
-                          if(searchFiledValue.value != ''){
-                            tempList.addAll(MemberViewModel.members.where((member) => member.fullNameEnglish!.toLowerCase().contains(searchFiledValue.value.toLowerCase()) || member.fullNameBangla!.toLowerCase().contains(searchFiledValue.value.toLowerCase())));
-                          }else{
-                            tempList.addAll(MemberViewModel.members);
-                          }
-
-                          return ListView.builder(
-                            controller: _scrollController,
-                            shrinkWrap: true,
-                            padding: EdgeInsets.zero,
-                            itemCount: tempList.length,
-                            itemBuilder: (_, index)=> MemberListTile(member : tempList[index])
-                          );
-                        });
-                      }else{
-                        return Center(child: SpinKitDualRing(color: AppColor.pink));
+                  child: Obx((){
+                    List<UserModel> tempList = [];
+                    if(searchFiledValue.value != ''){
+                      tempList.addAll(MemberViewModel.members.where((member) {
+                        if(member.fullNameEnglish!.toLowerCase().contains(searchFiledValue.value.toLowerCase())){
+                          return true;
+                        }if(member.fullNameBangla!.toLowerCase().contains(searchFiledValue.value.toLowerCase())){
+                          return true;
+                        }if(member.mobile!.contains(searchFiledValue.value)){
+                          return true;
+                        }if(member.designationName != null && member.designationName!.contains(searchFiledValue.value)){
+                          return true;
+                        }if(member.districtNameEngish != null && member.districtNameEngish!.contains(searchFiledValue.value)){
+                          return true;
+                        }if(member.districtNameBangla != null && member.districtNameBangla!.contains(searchFiledValue.value)){
+                          return true;
+                        }if(member.cadreName != null && member.cadreName!.contains(searchFiledValue.value)){
+                          return true;
+                        }else{
+                          return false;
+                        }
                       }
-                    },
-                  ),
+
+                      ));
+                    }else{
+                      tempList.addAll(MemberViewModel.members);
+                    }
+
+                    return ListView.builder(
+                        controller: _scrollController,
+                        shrinkWrap: true,
+                        padding: EdgeInsets.zero,
+                        itemCount: tempList.length,
+                        itemBuilder: (_, index)=> MemberListTile(member : tempList[index])
+                    );
+                  })
                 ),
                 Obx(()=>MemberViewModel.dataLoad.value ? SpinKitWave(color: AppColor.pink,size: 20) : SizedBox())
               ],

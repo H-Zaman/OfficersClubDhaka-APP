@@ -8,10 +8,10 @@ import 'package:officersclubdhaka/features/hall/viewModel/hallViewModel.dart';
 import 'package:officersclubdhaka/mainApp/util/resources/color.dart';
 import 'package:officersclubdhaka/mainApp/util/resources/strings.dart';
 import 'package:officersclubdhaka/mainApp/util/snack.dart';
-import 'package:paged_vertical_calendar/paged_vertical_calendar.dart';
 import 'package:officersclubdhaka/mainApp/util/dateTimeHelper.dart';
 
 import '../hallBookingScreen.dart';
+import 'lib/paged_vertical_calendar.dart';
 
 class HallEventCalender extends StatelessWidget {
   final List<HallEventModel> events;

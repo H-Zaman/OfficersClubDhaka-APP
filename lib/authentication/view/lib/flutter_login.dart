@@ -224,6 +224,8 @@ class FlutterLogin extends StatefulWidget {
       required this.onSignup,
       required this.onLogin,
       required this.onRecoverPassword,
+      required this.idController,
+      required this.mobileController,
       this.title,
       this.logo,
       this.messages,
@@ -243,6 +245,9 @@ class FlutterLogin extends StatefulWidget {
 
   /// Called when the user hit the submit button when in sign up mode
   final AuthCallback onSignup;
+
+  final TextEditingController idController;
+  final TextEditingController mobileController;
 
   /// Called when the user hit the submit button when in login mode
   final AuthCallback onLogin;
@@ -629,6 +634,8 @@ class _FlutterLoginState extends State<FlutterLogin>
                     Positioned(
                       child: AuthCard(
                         key: authCardKey,
+                        idController: widget.idController,
+                        mobileController: widget.mobileController,
                         padding: EdgeInsets.only(top: cardTopPosition),
                         loadingController: _loadingController,
                         emailValidator: emailValidator,

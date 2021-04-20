@@ -7,9 +7,24 @@ import 'package:officersclubdhaka/mainApp/util/resources/images.dart';
 import 'package:officersclubdhaka/mainApp/view/home.dart';
 
 class AuthScreen extends StatelessWidget {
+  final Map<String, dynamic>? data;
+
+  const AuthScreen({Key? key, this.data}) : super(key: key);
   @override
   Widget build(BuildContext context) {
+    TextEditingController _idController;
+    TextEditingController _mobileController;
+    print(data);
+    if(data == null){
+      _idController = TextEditingController();
+      _mobileController = TextEditingController();
+    }else{
+      _idController = TextEditingController(text: data!['id']);
+      _mobileController = TextEditingController(text: data!['mobile']);
+    }
     return FlutterLogin(
+      idController: _idController,
+      mobileController: _mobileController,
       hideForgotPasswordButton: true,
       hideSignUpButton: true,
       messages: LoginMessages(

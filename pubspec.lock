@@ -200,6 +200,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "4.1.4"
+  get_storage:
+    dependency: "direct main"
+    description:
+      name: get_storage
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.2"
   google_fonts:
     dependency: "direct main"
     description:
@@ -229,7 +236,7 @@ packages:
     source: hosted
     version: "3.0.2"
   infinite_scroll_pagination:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: infinite_scroll_pagination
       url: "https://pub.dartlang.org"
@@ -277,13 +284,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.0+1"
-  paged_vertical_calendar:
-    dependency: "direct main"
-    description:
-      name: paged_vertical_calendar
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.0.1"
   path:
     dependency: transitive
     description:
