@@ -8,14 +8,16 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:officersclubdhaka/____demoData.dart';
 import 'package:officersclubdhaka/authentication/view/authScreen.dart';
-import 'package:officersclubdhaka/features/hall/view/hallScreen.dart';
 import 'package:officersclubdhaka/features/memberList/view/memberListScreen.dart';
+import 'package:officersclubdhaka/features/services/hall/view/hallScreen.dart';
 import 'package:officersclubdhaka/mainApp/util/resources/color.dart';
 import 'package:officersclubdhaka/mainApp/util/resources/images.dart';
 import 'package:officersclubdhaka/mainApp/util/sharedWidgets/itemWidget.dart';
 import 'package:officersclubdhaka/mainApp/util/sharedWidgets/screenLoader.dart';
 import 'package:officersclubdhaka/user/viewModel/userViewModel.dart';
 import 'package:officersclubdhaka/user/viewModel/usreBackUp.dart';
+
+import 'widgets/drawerlistTile.dart';
 
 class Boom extends StatelessWidget {
   static final drawerController = ZoomDrawerController();
@@ -180,43 +182,6 @@ class DrawerScreen extends StatelessWidget {
     );
   }
 }
-
-class DrawerListTile extends StatelessWidget {
-  final String title;
-  final Widget? route;
-
-  const DrawerListTile({Key? key,required this.title, this.route}) : super(key: key);
-  @override
-  Widget build(BuildContext context) {
-    return ListTile(
-      onTap: () {
-        Boom.drawerController.close!();
-        if(route != null){
-          Get.to(route);
-        }
-      },
-      minVerticalPadding: 0,
-      dense: true,
-      leading: Icon(
-        CupertinoIcons.circle_fill,
-        color: Colors.white,
-        size: 20,
-      ),
-      horizontalTitleGap: 0,
-      title: Text(
-        title,
-        style: TextStyle(
-            fontSize: 18,
-            color: Colors.white,
-            fontWeight: FontWeight.bold,
-            height: 1.1
-        ),
-      ),
-    );
-  }
-}
-
-
 
 class Home extends StatefulWidget {
   @override
@@ -708,7 +673,6 @@ class RecentBlogs extends StatelessWidget {
     );
   }
 }
-
 
 class EventBlahBlahTile extends StatelessWidget {
   @override

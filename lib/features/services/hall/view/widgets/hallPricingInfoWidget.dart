@@ -2,11 +2,12 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:officersclubdhaka/____demoData.dart';
-import 'package:officersclubdhaka/features/hall/model/hallModel.dart';
-import 'package:officersclubdhaka/features/hall/view/widgets/hallEventCalender.dart';
-import 'package:officersclubdhaka/features/hall/view/widgets/rowTextInfoWidget.dart';
-import 'package:officersclubdhaka/features/hall/viewModel/hallViewModel.dart';
+import 'package:officersclubdhaka/features/services/hall/model/hallModel.dart';
+import 'package:officersclubdhaka/features/services/hall/viewModel/hallViewModel.dart';
 import 'package:officersclubdhaka/mainApp/util/resources/images.dart';
+import 'package:officersclubdhaka/mainApp/util/sharedWidgets/rowTextInfoWidget.dart';
+
+import 'hallEventCalender.dart';
 
 class HallPricingInfoWidget extends StatelessWidget {
   final HallModel hall;

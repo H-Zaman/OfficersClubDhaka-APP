@@ -6,19 +6,19 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:officersclubdhaka/____demoData.dart';
-import 'package:officersclubdhaka/features/hall/model/clubMemberModel.dart';
-import 'package:officersclubdhaka/features/hall/model/onHallBookResponse.dart';
-import 'package:officersclubdhaka/features/hall/model/hallModel.dart';
-import 'package:officersclubdhaka/features/hall/model/hallRentInfoModel.dart';
-import 'package:officersclubdhaka/features/hall/repository/hallRepo.dart';
-import 'package:officersclubdhaka/features/hall/viewModel/hallViewModel.dart';
+import 'package:officersclubdhaka/features/services/hall/model/clubMemberModel.dart';
+import 'package:officersclubdhaka/features/services/hall/model/hallModel.dart';
+import 'package:officersclubdhaka/features/services/hall/model/hallRentInfoModel.dart';
+import 'package:officersclubdhaka/features/services/hall/model/onHallBookResponse.dart';
+import 'package:officersclubdhaka/features/services/hall/repository/hallRepo.dart';
+import 'package:officersclubdhaka/features/services/hall/viewModel/hallViewModel.dart';
 import 'package:officersclubdhaka/mainApp/util/resources/color.dart';
 import 'package:officersclubdhaka/mainApp/util/resources/images.dart';
 import 'package:officersclubdhaka/mainApp/util/sharedWidgets/screenLoader.dart';
 import 'package:officersclubdhaka/mainApp/util/snack.dart';
 import 'package:officersclubdhaka/user/viewModel/userViewModel.dart';
 
-import 'widgets/rowTextInfoWidget.dart';
+import '../../../../mainApp/util/sharedWidgets/rowTextInfoWidget.dart';
 
 class HallBookingScreen extends StatefulWidget {
   final String? hasEvent;

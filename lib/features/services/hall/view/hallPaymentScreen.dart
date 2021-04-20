@@ -3,12 +3,12 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:officersclubdhaka/features/hall/model/hallBookInfoModel.dart';
-import 'package:officersclubdhaka/features/hall/repository/hallPaymentRepo.dart';
-import 'package:officersclubdhaka/features/hall/view/widgets/rowTextInfoWidget.dart';
+import 'package:officersclubdhaka/features/services/hall/model/hallBookInfoModel.dart';
+import 'package:officersclubdhaka/features/services/hall/repository/hallPaymentRepo.dart';
 import 'package:officersclubdhaka/mainApp/util/customDialog.dart';
 import 'package:officersclubdhaka/mainApp/util/resources/color.dart';
 import 'package:officersclubdhaka/mainApp/util/resources/images.dart';
+import 'package:officersclubdhaka/mainApp/util/sharedWidgets/rowTextInfoWidget.dart';
 import 'package:officersclubdhaka/mainApp/util/sharedWidgets/screenLoader.dart';
 
 class HallPaymentScreen extends StatefulWidget {
@@ -118,7 +118,7 @@ class _HallPaymentScreenState extends State<HallPaymentScreen> {
                         RowTextWidget(title: 'Shift', subTitle: data.hallShiftType!),
                         RowTextWidget(title: 'Rent Category', subTitle: data.hallRentCategoryName!),
                         RowTextWidget(title: 'Price', subTitle: data.bookingPrice!),
-                        RowTextWidget(title: 'Payment Info', subTitle: data.status!),
+                        RowTextWidget(title: 'Payment Info', subTitle: data.status! == '1' ? 'Temporary Booking Completed' : data.status! == '2' ? 'Payment Permitted' : data.status! == '3' ? 'Payment Completed' : 'Invalid'),
                       ],
                     ),
                     btnOkOnPress: (){},

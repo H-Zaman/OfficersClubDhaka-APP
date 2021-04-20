@@ -6,5 +6,5 @@ class AppColor{
   static final pink = Color(0xffF595B8);
 
 
-  static final primary = Color(0xffE3106E);
+  static final primary = Color(0xffAC7EFC) /*Color(0xffE3106E)*/;
 }

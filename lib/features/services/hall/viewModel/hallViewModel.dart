@@ -1,8 +1,10 @@
-import 'package:officersclubdhaka/features/hall/model/eventMOdel.dart';
-import 'package:officersclubdhaka/features/hall/model/hallModel.dart';
-import 'package:officersclubdhaka/features/hall/model/hallRentInfoModel.dart';
-import 'package:officersclubdhaka/features/hall/model/rentCategoryModel.dart';
-import 'package:officersclubdhaka/features/hall/repository/hallRepo.dart';
+
+
+import 'package:officersclubdhaka/features/services/hall/model/eventMOdel.dart';
+import 'package:officersclubdhaka/features/services/hall/model/hallModel.dart';
+import 'package:officersclubdhaka/features/services/hall/model/hallRentInfoModel.dart';
+import 'package:officersclubdhaka/features/services/hall/model/rentCategoryModel.dart';
+import 'package:officersclubdhaka/features/services/hall/repository/hallRepo.dart';
 
 class HallViewModel{
   static var hallList = <HallModel>[];

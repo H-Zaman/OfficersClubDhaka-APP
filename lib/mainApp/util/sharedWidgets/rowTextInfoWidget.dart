@@ -6,20 +6,22 @@ class RowTextWidget extends StatelessWidget {
   final TextAlign alignment;
   final Color? textColor;
   final double? size;
+  final CrossAxisAlignment? rowAlign;
 
   const RowTextWidget({Key? key,
     required this.title,
     required this.subTitle,
     this.alignment = TextAlign.start,
     this.textColor = Colors.black,
-    this.size = 14
+    this.size = 14,
+    this.rowAlign = CrossAxisAlignment.center,
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 6),
       child: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
+          crossAxisAlignment: rowAlign!,
           children: [
             Expanded(
               flex: 37,

@@ -4,12 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:officersclubdhaka/____demoData.dart';
-import 'package:officersclubdhaka/features/hall/view/hallPaymentScreen.dart';
-import 'package:officersclubdhaka/features/hall/viewModel/hallViewModel.dart';
+import 'package:officersclubdhaka/features/services/hall/viewModel/hallViewModel.dart';
 import 'package:officersclubdhaka/mainApp/util/resources/color.dart';
 import 'package:officersclubdhaka/mainApp/util/resources/strings.dart';
+import 'hallPaymentScreen.dart';
 import 'widgets/hallPricingInfoWidget.dart';
-import 'widgets/rowTextInfoWidget.dart';
+import '../../../../mainApp/util/sharedWidgets/rowTextInfoWidget.dart';
 
 class HallScreen extends StatefulWidget {
   @override

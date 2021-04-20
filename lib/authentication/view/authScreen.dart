@@ -14,7 +14,6 @@ class AuthScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     TextEditingController _idController;
     TextEditingController _mobileController;
-    print(data);
     if(data == null){
       _idController = TextEditingController();
       _mobileController = TextEditingController();

@@ -1,4 +1,4 @@
-import 'package:officersclubdhaka/features/hall/model/hallRentInfoModel.dart';
+import 'hallRentInfoModel.dart';
 
 class HallModel {
   HallModel({

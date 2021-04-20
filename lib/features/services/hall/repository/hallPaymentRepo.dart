@@ -1,5 +1,5 @@
 import 'package:dio/dio.dart';
-import 'package:officersclubdhaka/features/hall/model/hallBookInfoModel.dart';
+import 'package:officersclubdhaka/features/services/hall/model/hallBookInfoModel.dart';
 import 'package:officersclubdhaka/mainApp/util/config/dioConfig.dart';
 
 class HallPaymentRepo{
