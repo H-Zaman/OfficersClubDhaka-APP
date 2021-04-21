@@ -6,7 +6,8 @@ class ItemWidget extends StatelessWidget {
   final String? title;
   final String? image;
   final Widget? route;
-  const ItemWidget({Key? key, this.title, this.image, this.route}) : super(key: key);
+  final bool? label;
+  const ItemWidget({Key? key,this.label = false, this.title, this.image, this.route}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -25,18 +26,28 @@ class ItemWidget extends StatelessWidget {
           ),
           Positioned(
             bottom: 0,
-            right: 2,
-            left: 2,
+            left: 0,
+            right: 0,
             child: Center(
               child: Text(
                 title!,
                 style: TextStyle(
-                  color: AppColor.purple,
-                  fontWeight: FontWeight.bold,
                 ),
               ),
             ),
-          )
+          ),
+          if(label!)Positioned(
+            right: 8,
+            top: 8,
+            child: Container(
+              height: 12,
+              width: 12,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: AppColor.primary
+              ),
+            )
+          ),
         ],
       ),
     );

@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:officersclubdhaka/features/services/hall/model/eventMOdel.dart';
+import 'package:officersclubdhaka/features/services/hall/model/hallMasterDataModel.dart';
 import 'package:officersclubdhaka/features/services/hall/model/hallModel.dart';
 import 'package:officersclubdhaka/features/services/hall/model/hallRentInfoModel.dart';
 import 'package:officersclubdhaka/features/services/hall/model/onHallBookResponse.dart';
@@ -94,6 +95,24 @@ class HallRepo{
 
     }catch(e){
       return [];
+    }
+  }
+
+  static Future<HallMasterData?> getHallMasterData() async{
+
+    try{
+      final endPoint = APIConfig.getEndPoint('/HallMasterData');
+
+      Response response = await _client.get(endPoint);
+
+      if(response.data['status'] == 'success'){
+        return HallMasterData.fromJson(response.data['message']);
+      }else{
+        return null;
+      }
+
+    }catch(e){
+      return null;
     }
   }
 

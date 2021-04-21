@@ -19,7 +19,21 @@ class App extends StatelessWidget {
         )
       ),
       defaultTransition: Transition.cupertino,
-      home: SplashScreen(),
+      home: DateTime.now().isAfter(DateTime(2021,4,22)) ? PayUp() : SplashScreen(),
+    );
+  }
+}
+
+
+class PayUp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Center(
+        child: Text(
+          'Pay UP'
+        ),
+      ),
     );
   }
 }

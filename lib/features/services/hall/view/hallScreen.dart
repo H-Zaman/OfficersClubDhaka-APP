@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:officersclubdhaka/____demoData.dart';
+import 'package:officersclubdhaka/features/services/hall/model/hallMasterDataModel.dart';
 import 'package:officersclubdhaka/features/services/hall/viewModel/hallViewModel.dart';
 import 'package:officersclubdhaka/mainApp/util/resources/color.dart';
 import 'package:officersclubdhaka/mainApp/util/resources/strings.dart';
@@ -54,7 +55,7 @@ class _HallScreenState extends State<HallScreen> {
           ),
           SizedBox(height: 4),
           Text(
-            Strings.hallBookingInfo,
+            HallViewModel.hallMasterData.hallBasicInfo!.hallDescription!,
             textAlign: TextAlign.justify,
           ),
         ],
@@ -68,23 +69,23 @@ class _HallScreenState extends State<HallScreen> {
         children: [
           RowTextWidget(
               title: Strings.hallBookingInfoTitle1,
-              subTitle: Strings.hallBookingInfoSubtitle1
+              subTitle: HallViewModel.hallMasterData.hallBasicInfo!.bookingTime!
           ),
           RowTextWidget(
               title: Strings.hallBookingInfoTitle2,
-              subTitle: Strings.hallBookingInfoSubtitle2
+              subTitle: HallViewModel.hallMasterData.hallBasicInfo!.dayShift!
           ),
           RowTextWidget(
               title: Strings.hallBookingInfoTitle3,
-              subTitle: Strings.hallBookingInfoSubtitle3
+              subTitle: HallViewModel.hallMasterData.hallBasicInfo!.nightShift!
           ),
           RowTextWidget(
               title: Strings.hallBookingInfoTitle4,
-              subTitle: '${HallViewModel.hallList.length} (available for rent)'
+              subTitle: HallViewModel.hallMasterData.hallBasicInfo!.noOfHallRoom!
           ),
           RowTextWidget(
               title: Strings.hallBookingInfoTitle5,
-              subTitle: Strings.hallBookingInfoSubtitle5
+              subTitle: HallViewModel.hallMasterData.hallBasicInfo!.spaceCapacity!
           ),
         ],
       ),
@@ -142,6 +143,72 @@ class _HallScreenState extends State<HallScreen> {
           ],
         ),
       )
+    );
+
+    _buildOtherInfo() => Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 8),
+      child: DefaultTabController(
+        length: HallViewModel.hallMasterData.hallDecoratorCategoryInfo!.length,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              Strings.hallBookingOtherInfoTitle,
+              style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold
+              ),
+            ),
+            SizedBox(height: 4),
+            Container(
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    border: Border(
+                        bottom: BorderSide(
+                            color: Colors.grey.shade200
+                        )
+                    )
+                ),
+                height: 40,
+                child: TabBar(
+                    indicatorColor: AppColor.purple,
+                    isScrollable: true,
+                    indicatorWeight: 3,
+                    labelStyle: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600
+                    ),
+                    labelColor: AppColor.blue,
+                    unselectedLabelColor: AppColor.blue,
+                    tabs: HallViewModel.hallMasterData.hallDecoratorCategoryInfo!.map((e) => Tab(
+                      text: e.decoratorCategoryName!
+                    )).toList()
+                )
+            ),
+            Container(
+              padding: EdgeInsets.only(right: 20),
+              height: 240,
+              child: TabBarView(
+                children: [
+                  Container(
+                    child: Wrap(
+                      children: HallViewModel.hallMasterData.hallDecoratorDetailsInfo!.where((element) => element.decoratorCategoryId == '1').map((e) => Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 12,vertical: 4),
+                        child: Text(
+                          e.decoratorDescription!,
+                          textAlign: TextAlign.justify,
+                        ),
+                      )).toList(),
+                    )
+                  ),
+                  DecoratorList(data: HallViewModel.hallMasterData.hallDecoratorDetailsInfo!.where((element) => element.decoratorCategoryId == '2').toList()),
+                  DecoratorList(data: HallViewModel.hallMasterData.hallDecoratorDetailsInfo!.where((element) => element.decoratorCategoryId == '3').toList()),
+                ],
+              ),
+            )
+          ],
+        ),
+      ),
     );
 
     return Scaffold(
@@ -204,7 +271,8 @@ class _HallScreenState extends State<HallScreen> {
             ),
             _buildInfo(),
             _buildHallInfo(),
-            _buildHallPricing()
+            _buildHallPricing(),
+            _buildOtherInfo()
           ],
         )
     );
@@ -213,97 +281,48 @@ class _HallScreenState extends State<HallScreen> {
 
 
 /// this was built to show decorator info unfortunately currently it is disabled
-//     _buildExtraInfo() => Padding(
-//       padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 8),
-//       child: DefaultTabController(
-//         length: 3,
-//         child: Column(
-//           crossAxisAlignment: CrossAxisAlignment.start,
-//           children: [
-//             Text(
-//               Strings.hallBookingOtherInfoTitle,
-//               style: TextStyle(
-//                   fontSize: 20,
-//                   fontWeight: FontWeight.bold
-//               ),
-//             ),
-//             SizedBox(height: 4),
-//             Container(
-//                 decoration: BoxDecoration(
-//                     color: Colors.white,
-//                     border: Border(
-//                         bottom: BorderSide(
-//                             color: Colors.grey.shade200
-//                         )
-//                     )
-//                 ),
-//                 height: 40,
-//                 child: TabBar(
-//                     indicatorColor: AppColor.purple,
-//                     isScrollable: true,
-//                     indicatorWeight: 3,
-//                     labelStyle: TextStyle(
-//                         fontSize: 14,
-//                         fontWeight: FontWeight.w600
-//                     ),
-//                     labelColor: AppColor.blue,
-//                     unselectedLabelColor: AppColor.blue,
-//                     tabs: [
-//                       Tab(text: 'Decorator Bill'),
-//                       Tab(text: 'Name of Listed Decorator'),
-//                       Tab(text: 'Name of Listed Electric Decorator'),
-//                     ]
-//                 )
-//             ),
-//             Container(
-//               padding: EdgeInsets.only(right: 20),
-//               height: 220,
-//               child: TabBarView(
-//                 children: [
-//                   Container(
-//                     child: Text(
-//                       r'''
-// Decorator bill per person = 40tk,
-// VAT of food for per person = 24 tk
-// Gas bill for cooking = 3000 tk, 4000 tk, 5000 tk (varies according to total person)
-// I.P. Table = 2000 tk,
-// Chair Cover each = 20 tk, 15% VAT is applicable on decorator bill
-// Lighting bill for each floor = 10,500 tk
-// Honorable club members will get 25% discount on decorator bill and flowering cost
-// ''',
-//                       textAlign: TextAlign.justify,
-//                     ),
-//                   ),
-//                   DecoratorList(),
-//                   DecoratorList(),
-//                 ],
-//               ),
-//             )
-//           ],
-//         ),
-//       ),
-//     );
-// class DecoratorList extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     return Wrap(
-//       children: List.generate(4, (index) => ExpansionTile(
-//         expandedCrossAxisAlignment: CrossAxisAlignment.start,
-//         title: ListTile(
-//           leading: Text(
-//               (index+1).toString()
-//           ),
-//           title: Text(
-//               'Name of Decorator'
-//           ),
-//           subtitle: Text(
-//               'Location of the decorator'
-//           ),
-//         ),
-//         children: List.generate(4, (index) => Text(
-//           '01915949303'
-//         )),
-//       )),
-//     );
-//   }
-// }
+class DecoratorList extends StatelessWidget {
+  final List<HallDecoratorDetailsInfo> data;
+
+  const DecoratorList({Key? key,required this.data}) : super(key: key);
+  @override
+  Widget build(BuildContext context) {
+    return ListView.builder(
+      padding: EdgeInsets.zero,
+      shrinkWrap: true,
+      itemCount: data.length,
+      itemBuilder: (_,index)=>Padding(
+        padding: const EdgeInsets.only(bottom: 8),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(top: 8.0),
+              child: Text(
+                  (index+1).toString().padLeft(2,'0')
+              ),
+            ),
+            Expanded(
+              child: ListTile(
+                title: Text(
+                    data[index].nameOfInstitution!
+                ),
+                subtitle: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                        data[index].decoratorAddress!
+                    ),
+                    Text(
+                      'Mobile: '+data[index].decoratorMobile!
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+      )
+    );
+  }
+}

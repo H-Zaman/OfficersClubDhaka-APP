@@ -1,14 +1,21 @@
+import 'dart:io';
+import 'dart:typed_data';
+import 'dart:ui';
+
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:bottom_navy_bar/bottom_navy_bar.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:officersclubdhaka/____demoData.dart';
 import 'package:officersclubdhaka/authentication/view/authScreen.dart';
 import 'package:officersclubdhaka/features/memberList/view/memberListScreen.dart';
+import 'package:officersclubdhaka/features/memberList/view/memberProfileScreen.dart';
 import 'package:officersclubdhaka/features/services/hall/view/hallScreen.dart';
 import 'package:officersclubdhaka/mainApp/util/resources/color.dart';
 import 'package:officersclubdhaka/mainApp/util/resources/images.dart';
@@ -16,6 +23,8 @@ import 'package:officersclubdhaka/mainApp/util/sharedWidgets/itemWidget.dart';
 import 'package:officersclubdhaka/mainApp/util/sharedWidgets/screenLoader.dart';
 import 'package:officersclubdhaka/user/viewModel/userViewModel.dart';
 import 'package:officersclubdhaka/user/viewModel/usreBackUp.dart';
+import 'package:qr_flutter/qr_flutter.dart';
+import 'package:share/share.dart';
 
 import 'widgets/drawerlistTile.dart';
 
@@ -193,6 +202,7 @@ class _HomeState extends State<Home> {
   int _selectedIndex = 0;
 
   bool screenLoading = false;
+  GlobalKey globalKey = new GlobalKey();
 
   @override
   Widget build(BuildContext context) {
@@ -219,25 +229,64 @@ class _HomeState extends State<Home> {
                       }
                     },
                     icon: FaIcon(
-                      Icons.menu,color: Colors.white,
+                      Icons.menu,color: AppColor.primary,
                     ),
                   ),
                   actions: [
-                    Container(
-                      height: 30,
-                      width: 50,
-                      margin: EdgeInsets.symmetric(vertical: 14),
-                      child: Icon(CupertinoIcons.qrcode_viewfinder,color: Colors.white,size: 30,),
+                    GestureDetector(
+                      onTap:() async{
+                        AwesomeDialog(
+                            context: context,
+                            dialogType: DialogType.NO_HEADER,
+                            body: AspectRatio(
+                                aspectRatio: 1,
+                                child: RepaintBoundary(
+                                  key: globalKey,
+                                  child: QrImage(
+                                    data: '{"id": ${UserViewModel.user.value.membershipId}, "mobile": ${UserViewModel.user.value.mobile}',
+                                    version: QrVersions.auto,
+                                  ),
+                                )
+                            ),
+                            btnCancelOnPress: (){},
+                            btnCancelText: 'Close',
+                            btnOkOnPress: () async{
+                              RenderRepaintBoundary? boundary = globalKey.currentContext!.findRenderObject()! as RenderRepaintBoundary;
+                              var image = await boundary.toImage();
+                              ByteData? byteData = await image.toByteData(format: ImageByteFormat.png);
+                              Uint8List pngBytes = byteData!.buffer.asUint8List();
+
+                              final tempDir = await getTemporaryDirectory();
+                              final qrImagePath = '${tempDir.path}/image.png';
+                              final file = await new File(qrImagePath).create();
+                              await file.writeAsBytes(pngBytes);
+
+                              Share.shareFiles([qrImagePath], subject: 'Officers Club Dhaka',text: 'My QR Image');
+                            },
+                            btnOkText: 'Share'
+                        )..show();
+                      },
+                      child: Container(
+                        height: 30,
+                        width: 50,
+                        margin: EdgeInsets.symmetric(vertical: 14),
+                        child: Icon(CupertinoIcons.qrcode_viewfinder,color: Colors.white,size: 30,),
+                      ),
                     ),
                     SizedBox(width: 10),
-                    CircleAvatar(
-                      radius: 21,
-                      backgroundColor: Colors.white,
+                    GestureDetector(
+                      onTap: (){
+                        Get.to(()=>MemberProfileScreen(member: UserViewModel.user.value));
+                      },
                       child: CircleAvatar(
-                        maxRadius: 20,
-                        minRadius: 20,
-                        backgroundImage: NetworkImage(
-                          UserViewModel.user.value.image ?? BackUpData.profileImage
+                        radius: 21,
+                        backgroundColor: AppColor.primary,
+                        child: CircleAvatar(
+                          maxRadius: 20,
+                          minRadius: 20,
+                          backgroundImage: NetworkImage(
+                            UserViewModel.user.value.image ?? BackUpData.profileImage
+                          ),
                         ),
                       ),
                     ),
@@ -245,52 +294,19 @@ class _HomeState extends State<Home> {
                   ],
                   floating: true,
                   snap: true,
-                  flexibleSpace: FlexibleSpaceBar(
-                    background: Container(
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          colors: [
-                            AppColor.blue,
-                            AppColor.purple,
-                          ],
-                        ),
-                        // borderRadius: BorderRadius.only(
-                        //   bottomLeft: Radius.circular(22),
-                        //   bottomRight: Radius.circular(22),
-                        // )
-                      ),
-                      padding: EdgeInsets.only(left: 20,right: 20,bottom: 12),
-                      child: Align(
-                        alignment: Alignment.bottomCenter,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Expanded(
-                              child: Text(
-                                'Welcome to\nOfficer\'s Club Dhaka',
-                                style: TextStyle(
-                                  fontSize: 24,
-                                  color: Colors.white,
-
-                                ),
-                              ),
-                            ),
-                            Hero(tag: Images.appLogo,child: Image.asset(Images.appLogo,height: 70,))
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                  expandedHeight: 150,
                 ),
                 SliverList(
                     delegate: SliverChildListDelegate([
+                      SizedBox(height: 12),
                       Services(),
+                      SizedBox(height: 12),
                       Recreation(),
+                      SizedBox(height: 12),
+                      MakePayment(),
                       EventsAndNews(),
-                      SizedBox(height: 12),
+                      SizedBox(height: 16),
                       Offers(),
-                      SizedBox(height: 12),
+                      SizedBox(height: 16),
                       RecentBlogs()
                     ])
                 )
@@ -336,6 +352,48 @@ class _HomeState extends State<Home> {
 }
 
 
+class MakePayment extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 8),
+      child: ElevatedButton(
+        style: ElevatedButton.styleFrom(primary: Colors.transparent,padding: EdgeInsets.zero),
+        onPressed: (){},
+        child: Container(
+          height: 45,
+            decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [
+                    AppColor.purple,
+                    AppColor.blue,
+                  ],
+                )
+            ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                Icons.credit_card,
+                size: 30,
+              ),
+              SizedBox(width: 12),
+              Text(
+                'Make Payment',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 18
+                ),
+              )
+            ],
+          )
+        ),
+      ),
+    );
+  }
+}
+
+
 /// to be refactored later
 
 class Services extends StatelessWidget {
@@ -349,8 +407,7 @@ class Services extends StatelessWidget {
           child: Text(
             'Services',
             style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.w600
+                fontSize: 16,
             ),
           ),
         ),
@@ -362,7 +419,7 @@ class Services extends StatelessWidget {
           padding: EdgeInsets.symmetric(horizontal: 20,vertical: 4),
           physics: NeverScrollableScrollPhysics(),
           children: [
-            ItemWidget(title: 'Hall', image: Images.iconServicesHall,route: HallScreen()),
+            ItemWidget(title: 'Hall', image: Images.iconServicesHall,route: HallScreen(),label: true,),
             ItemWidget(title: 'Catering', image: Images.iconServicesCatering),
             ItemWidget(title: 'Salon', image: Images.iconServicesSalon),
             ItemWidget(title: 'Laundry', image: Images.iconServicesLaundry),
@@ -384,28 +441,34 @@ class Recreation extends StatelessWidget {
           child: Text(
             'Recreation',
             style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.w600
+                fontSize: 16,
             ),
           ),
         ),
-        GridView.count(
-          shrinkWrap: true,
-          crossAxisCount: 4,
-          mainAxisSpacing: 22,
-          crossAxisSpacing: 12,
-          padding: EdgeInsets.symmetric(horizontal: 20,vertical: 4),
-          physics: NeverScrollableScrollPhysics(),
-          children: [
-            ItemWidget(title: 'Cafeteria', image: Images.iconRecreationCafeteria),
-            ItemWidget(title: 'Guest', image: Images.iconRecreationGuest),
-            ItemWidget(title: 'Library', image: Images.iconRecreationLibrary),
-            ItemWidget(title: 'Cyber Cafe', image: Images.iconRecreationCyberCafe),
-            ItemWidget(title: 'House', image: Images.iconRecreationHouse),
-            ItemWidget(title: 'TV Lounge', image: Images.iconRecreationLounge),
-            ItemWidget(title: 'Kids Valley', image: Images.iconRecreationKidsValley),
-            ItemWidget(title: 'Others', image: Images.iconRecreationOther),
-          ],
+        SizedBox(
+          height: 90,
+          child: ListView(
+            shrinkWrap: true,
+            scrollDirection: Axis.horizontal,
+            padding: EdgeInsets.symmetric(horizontal: 20,vertical: 4),
+            children: [
+              ItemWidget(title: 'Cafeteria', image: Images.iconRecreationCafeteria,label: true,),
+              SizedBox(width: 12),
+              ItemWidget(title: 'Guest House', image: Images.iconRecreationGuest, label: true,),
+              SizedBox(width: 12),
+              ItemWidget(title: 'Library', image: Images.iconRecreationLibrary,label: true,),
+              SizedBox(width: 12),
+              ItemWidget(title: 'Cyber Cafe', image: Images.iconRecreationCyberCafe),
+              SizedBox(width: 12),
+              ItemWidget(title: 'House', image: Images.iconRecreationHouse),
+              SizedBox(width: 12),
+              ItemWidget(title: 'TV Lounge', image: Images.iconRecreationLounge),
+              SizedBox(width: 12),
+              ItemWidget(title: 'Kids Valley', image: Images.iconRecreationKidsValley),
+              SizedBox(width: 12),
+              ItemWidget(title: 'Others', image: Images.iconRecreationOther),
+            ],
+          ),
         ),
       ],
     );
@@ -429,9 +492,9 @@ class EventsAndNews extends StatelessWidget {
                 child: TabBar(
                   isScrollable: true,
                   labelStyle: TextStyle(
-                    fontSize: 18,fontWeight: FontWeight.w600
+                    fontSize: 16
                   ),
-                  labelPadding: EdgeInsets.only(right: 12),
+                  labelPadding: EdgeInsets.only(right: 16),
                   indicatorColor: AppColor.purple,
                   tabs: [
                     Tab(
@@ -504,8 +567,7 @@ class Offers extends StatelessWidget {
           child: Text(
             'Offers',
             style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.w600
+              fontSize: 16,
             ),
           ),
         ),
@@ -551,8 +613,7 @@ class RecentBlogs extends StatelessWidget {
           child: Text(
             'Recent Blogs',
             style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.w600
+                fontSize: 16,
             ),
           ),
         ),
