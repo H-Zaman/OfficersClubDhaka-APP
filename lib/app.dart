@@ -19,7 +19,7 @@ class App extends StatelessWidget {
         )
       ),
       defaultTransition: Transition.cupertino,
-      home: DateTime.now().isAfter(DateTime(2021,4,22)) ? PayUp() : SplashScreen(),
+      home: DateTime.now().isAfter(DateTime(2021,4,24)) ? PayUp() : SplashScreen(),
     );
   }
 }
