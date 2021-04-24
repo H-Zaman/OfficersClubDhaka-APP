@@ -31,7 +31,7 @@ class HallPricingInfoWidget extends StatelessWidget {
             ),
             Positioned(
               right: 4,
-              bottom: 4,
+              top: 4,
               child: ElevatedButton(
                 onPressed: (){
                   Get.bottomSheet(HallEventCalender(

@@ -480,7 +480,7 @@ class Recreation extends StatelessWidget {
                               ItemWidget(title: 'Guest House', image: Images.iconRecreationGuest, label: true,),
                               ItemWidget(title: 'Library', image: Images.iconRecreationLibrary,label: true,),
                               ItemWidget(title: 'Cyber Cafe', image: Images.iconRecreationCyberCafe),
-                              ItemWidget(title: 'House', image: Images.iconRecreationHouse),
+                              ItemWidget(title: 'Housie', image: Images.iconRecreationHouse),
                               ItemWidget(title: 'TV Lounge', image: Images.iconRecreationLounge),
                               ItemWidget(title: 'Kids Valley', image: Images.iconRecreationKidsValley),
                               ItemWidget(title: 'Others', image: Images.iconRecreationOther),
