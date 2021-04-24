@@ -17,8 +17,8 @@ class HallPaymentScreen extends StatefulWidget {
 }
 
 class _HallPaymentScreenState extends State<HallPaymentScreen> {
-  final TextEditingController _bookingNoController = TextEditingController(text: '10017');
-  final TextEditingController _mobileNoController = TextEditingController(text: '+8801915949303');
+  final TextEditingController _bookingNoController = TextEditingController();
+  final TextEditingController _mobileNoController = TextEditingController();
 
   bool screenLoading = false;
   loadScreen() => setState(()=>screenLoading = !screenLoading);
