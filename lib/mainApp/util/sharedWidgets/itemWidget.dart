@@ -1,3 +1,4 @@
+import 'package:auto_size_text_pk/auto_size_text_pk.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:officersclubdhaka/mainApp/util/resources/color.dart';
@@ -29,12 +30,14 @@ class ItemWidget extends StatelessWidget {
             left: 0,
             right: 0,
             child: Center(
-              child: Text(
+              child: AutoSizeText(
                 title!,
+                maxLines: 1,
                 style: TextStyle(
+                  fontSize: 14
                 ),
-              ),
-            ),
+              )
+            )
           ),
           if(label!)Positioned(
             right: 8,

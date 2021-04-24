@@ -14,6 +14,7 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:officersclubdhaka/____demoData.dart';
 import 'package:officersclubdhaka/authentication/view/authScreen.dart';
+import 'package:officersclubdhaka/features/memberList/repository/memberRepo.dart';
 import 'package:officersclubdhaka/features/memberList/view/memberListScreen.dart';
 import 'package:officersclubdhaka/features/memberList/view/memberProfileScreen.dart';
 import 'package:officersclubdhaka/features/services/hall/view/hallScreen.dart';
@@ -21,6 +22,7 @@ import 'package:officersclubdhaka/mainApp/util/resources/color.dart';
 import 'package:officersclubdhaka/mainApp/util/resources/images.dart';
 import 'package:officersclubdhaka/mainApp/util/sharedWidgets/itemWidget.dart';
 import 'package:officersclubdhaka/mainApp/util/sharedWidgets/screenLoader.dart';
+import 'package:officersclubdhaka/user/model/userModel.dart';
 import 'package:officersclubdhaka/user/viewModel/userViewModel.dart';
 import 'package:officersclubdhaka/user/viewModel/usreBackUp.dart';
 import 'package:qr_flutter/qr_flutter.dart';
@@ -80,7 +82,7 @@ class DrawerScreen extends StatelessWidget {
                             border: Border.all(color: Colors.white,width: 1.5),
                             image: DecorationImage(
                               image: CachedNetworkImageProvider(
-                                UserViewModel.user.value.image ?? BackUpData.profileImage
+                                UserViewModel.user.value.image != null ? Images.imagePrefix+UserViewModel.user.value.image! : BackUpData.profileImage
                               ),
                               fit: BoxFit.cover
                             )
@@ -202,6 +204,7 @@ class _HomeState extends State<Home> {
   int _selectedIndex = 0;
 
   bool screenLoading = false;
+  loadScreen() => setState(() => screenLoading = !screenLoading);
   GlobalKey globalKey = new GlobalKey();
 
   @override
@@ -275,8 +278,13 @@ class _HomeState extends State<Home> {
                     ),
                     SizedBox(width: 10),
                     GestureDetector(
-                      onTap: (){
-                        Get.to(()=>MemberProfileScreen(member: UserViewModel.user.value));
+                      onTap: () async{
+                        loadScreen();
+                        UserModel? data = await MemberRepo.getMemberData(UserViewModel.user.value.memberId!);
+                        loadScreen();
+                        if(data != null){
+                          Get.to(()=>MemberProfileScreen(member: data));
+                        }
                       },
                       child: CircleAvatar(
                         radius: 21,
@@ -285,7 +293,7 @@ class _HomeState extends State<Home> {
                           maxRadius: 20,
                           minRadius: 20,
                           backgroundImage: NetworkImage(
-                            UserViewModel.user.value.image ?? BackUpData.profileImage
+                            UserViewModel.user.value.image != null ? Images.imagePrefix+UserViewModel.user.value.image! : BackUpData.profileImage
                           ),
                         ),
                       ),
@@ -302,9 +310,10 @@ class _HomeState extends State<Home> {
                       SizedBox(height: 12),
                       Recreation(),
                       SizedBox(height: 12),
-                      MakePayment(),
                       EventsAndNews(),
-                      SizedBox(height: 16),
+                      SizedBox(height: 4),
+                      MakePayment(),
+                      SizedBox(height: 12),
                       Offers(),
                       SizedBox(height: 16),
                       RecentBlogs()
@@ -406,9 +415,6 @@ class Services extends StatelessWidget {
           padding: const EdgeInsets.only(left: 20,top: 12),
           child: Text(
             'Services',
-            style: TextStyle(
-                fontSize: 16,
-            ),
           ),
         ),
         GridView.count(
@@ -433,16 +439,63 @@ class Services extends StatelessWidget {
 class Recreation extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final double gap = 30;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
-          padding: const EdgeInsets.only(left: 20,top: 12),
-          child: Text(
-            'Recreation',
-            style: TextStyle(
-                fontSize: 16,
-            ),
+          padding: const EdgeInsets.only(left: 20,top: 12,right: 20),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'Recreation'
+              ),
+              GestureDetector(
+                onTap: (){
+                  Get.bottomSheet(Container(
+                    color: Colors.white,
+                    height: 250,
+                    padding: EdgeInsets.symmetric(horizontal: 20,vertical: 12),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(left: 14),
+                          child: Text(
+                            'Recreation'
+                          ),
+                        ),
+                        SizedBox(height: 12,),
+                        SizedBox(
+                          height: 180,
+                          child: GridView.count(
+                            crossAxisCount: 4,
+                            shrinkWrap: true,
+                            padding: EdgeInsets.zero,
+                            crossAxisSpacing: 12,
+                            mainAxisSpacing: 12,
+                            children: [
+                              ItemWidget(title: 'Cafeteria', image: Images.iconRecreationCafeteria,label: true,),
+                              ItemWidget(title: 'Guest House', image: Images.iconRecreationGuest, label: true,),
+                              ItemWidget(title: 'Library', image: Images.iconRecreationLibrary,label: true,),
+                              ItemWidget(title: 'Cyber Cafe', image: Images.iconRecreationCyberCafe),
+                              ItemWidget(title: 'House', image: Images.iconRecreationHouse),
+                              ItemWidget(title: 'TV Lounge', image: Images.iconRecreationLounge),
+                              ItemWidget(title: 'Kids Valley', image: Images.iconRecreationKidsValley),
+                              ItemWidget(title: 'Others', image: Images.iconRecreationOther),
+                            ],
+                          ),
+                        )
+                      ],
+                    ),
+                  ));
+                },
+                child: Icon(
+                  Icons.arrow_drop_up
+                ),
+              )
+            ],
           ),
         ),
         SizedBox(
@@ -453,19 +506,19 @@ class Recreation extends StatelessWidget {
             padding: EdgeInsets.symmetric(horizontal: 20,vertical: 4),
             children: [
               ItemWidget(title: 'Cafeteria', image: Images.iconRecreationCafeteria,label: true,),
-              SizedBox(width: 42),
+              SizedBox(width: gap),
               ItemWidget(title: 'Guest House', image: Images.iconRecreationGuest, label: true,),
-              SizedBox(width: 42),
+              SizedBox(width: gap),
               ItemWidget(title: 'Library', image: Images.iconRecreationLibrary,label: true,),
-              SizedBox(width: 42),
+              SizedBox(width: gap),
               ItemWidget(title: 'Cyber Cafe', image: Images.iconRecreationCyberCafe),
-              SizedBox(width: 42),
-              ItemWidget(title: 'House', image: Images.iconRecreationHouse),
-              SizedBox(width: 42),
+              SizedBox(width: gap),
+              ItemWidget(title: 'Housie', image: Images.iconRecreationHouse),
+              SizedBox(width: gap),
               ItemWidget(title: 'TV Lounge', image: Images.iconRecreationLounge),
-              SizedBox(width: 42),
+              SizedBox(width: gap),
               ItemWidget(title: 'Kids Valley', image: Images.iconRecreationKidsValley),
-              SizedBox(width: 42),
+              SizedBox(width: gap),
               ItemWidget(title: 'Others', image: Images.iconRecreationOther),
             ],
           ),
@@ -492,7 +545,7 @@ class EventsAndNews extends StatelessWidget {
                 child: TabBar(
                   isScrollable: true,
                   labelStyle: TextStyle(
-                    fontSize: 16
+                    fontSize: 14
                   ),
                   labelPadding: EdgeInsets.only(right: 16),
                   indicatorColor: AppColor.purple,
@@ -566,9 +619,6 @@ class Offers extends StatelessWidget {
           padding: const EdgeInsets.only(left: 20),
           child: Text(
             'Offers',
-            style: TextStyle(
-              fontSize: 16,
-            ),
           ),
         ),
         SizedBox(height: 4),
@@ -612,9 +662,6 @@ class RecentBlogs extends StatelessWidget {
           padding: const EdgeInsets.only(left: 20,bottom: 12),
           child: Text(
             'Recent Blogs',
-            style: TextStyle(
-                fontSize: 16,
-            ),
           ),
         ),
         SizedBox(
@@ -653,12 +700,15 @@ class RecentBlogs extends StatelessWidget {
                             Text(
                               'HighLighst of Pris and france- Blog',
                               style: TextStyle(
-                                  fontSize: 16,
+                                  fontSize: 14,
                                   fontWeight: FontWeight.bold
                               ),
                             ),
                             Text(
                               'H.Zaman Writer',
+                              style: TextStyle(
+                                fontSize: 12
+                              ),
                             ),
                           ],
                         ),
@@ -708,7 +758,7 @@ class RecentBlogs extends StatelessWidget {
                               Text(
                                 'Blog-HighLights of Paris and france',
                                 style: TextStyle(
-                                    fontSize: 16,
+                                    fontSize: 14,
                                     fontWeight: FontWeight.bold
                                 ),
                               ),
@@ -716,7 +766,7 @@ class RecentBlogs extends StatelessWidget {
                                 'In publishing and graphic design, Lorem ipsum is a placeholder text commonly used to demonstrate the visual form of a document or a typeface without relying on meaningful content.',
                                 maxLines: 2,
                                 style: TextStyle(
-                                  fontSize: 16,
+                                  fontSize: 12,
                                 ),
                               ),
                             ],

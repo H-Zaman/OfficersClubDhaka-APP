@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:typed_data';
 import 'dart:ui';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/rendering.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/cupertino.dart';
@@ -19,10 +20,6 @@ import 'package:qr_flutter/qr_flutter.dart';
 import 'package:share/share.dart';
 
 class AuthScreen extends StatefulWidget {
-  final Map<String, dynamic>? data;
-
-  const AuthScreen({Key? key, this.data}) : super(key: key);
-
   @override
   _AuthScreenState createState() => _AuthScreenState();
 }
@@ -45,14 +42,13 @@ class _AuthScreenState extends State<AuthScreen> {
         });
       }
     });
-    if(widget.data == null){
-      _idController = TextEditingController();
-      _mobileController = TextEditingController();
+    if(GetStorage().hasData('userInfo')){
+      _idController = TextEditingController(text: GetStorage().read('userInfo')!['id']);
     }else{
-      _idController = TextEditingController(text: widget.data!['id']);
-      _mobileController = TextEditingController(text: widget.data!['mobile']);
+      _idController = TextEditingController();
     }
-  }
+    _mobileController = TextEditingController();
+}
 
   bool screenLoading = false;
   loadScreen() => setState(()=> screenLoading = !screenLoading);
@@ -68,7 +64,7 @@ class _AuthScreenState extends State<AuthScreen> {
           actions: [
             GestureDetector(
               onTap: (){
-                if(widget.data != null){
+                if(GetStorage().hasData('userInfo')){
                   AwesomeDialog(
                       context: context,
                       dialogType: DialogType.NO_HEADER,
@@ -77,7 +73,7 @@ class _AuthScreenState extends State<AuthScreen> {
                           child: RepaintBoundary(
                             key: globalKey,
                             child: QrImage(
-                              data: widget.data.toString(),
+                              data: GetStorage().read('userInfo')!.toString(),
                               version: QrVersions.auto,
                             ),
                           )
@@ -131,7 +127,7 @@ class _AuthScreenState extends State<AuthScreen> {
                 shrinkWrap: true,
                 padding: EdgeInsets.only(left: 20,right: 20),
                 children: [
-
+                  SizedBox(height: 22),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -141,16 +137,12 @@ class _AuthScreenState extends State<AuthScreen> {
                       ),
 
 
-                      if(widget.data != null)
-                        Container(
-                          decoration: BoxDecoration(
-                            border: Border.all(color: AppColor.primary),
-                          ),
-                          child: GetStorage().read('image') != null && GetStorage().read('image') != '' ? Image(
-                            image: AssetImage(Images.imagePrefix+GetStorage().read('image')),
-                            height: 80,width: 70,fit: BoxFit.cover,
-                          ) : Image.network(BackUpData.profileImage,height: 80,width: 70,fit: BoxFit.cover,),
-                        ),
+                      Container(
+                        child: GetStorage().read('image') != null && GetStorage().read('image') != '' ? Image(
+                          image: CachedNetworkImageProvider(Images.imagePrefix+GetStorage().read('image')),
+                          height: 80,width: 70,fit: BoxFit.cover,
+                        ) : Image.network(BackUpData.profileImage,height: 80,width: 70,fit: BoxFit.cover,),
+                      )
 
 
                     ],
@@ -174,10 +166,9 @@ class _AuthScreenState extends State<AuthScreen> {
                         elevation: .5,
                         child: TextField(
                           controller: _idController,
-                          autofocus: true,
                           decoration: InputDecoration(
                             filled: true,
-                            hintText: 'Member ID input field',
+                            hintText: 'Please enter Member Id',
                             fillColor: Colors.grey.shade50,
                             border: OutlineInputBorder(
                               borderSide: BorderSide.none
@@ -188,23 +179,35 @@ class _AuthScreenState extends State<AuthScreen> {
                       )
                     ],
                   ),
-                  SizedBox(height: 12,),
+                  SizedBox(height: 16,),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        'Mobile No'
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+
+                          Text(
+                              'Mobile No'
+                          ),
+                          Text(
+                            'Reset mobile number?'
+                          )
+                        ]
                       ),
                       Card(
                         elevation: .5,
                         child: TextField(
+                          autofocus: true,
                           focusNode: _node,
                           controller: _mobileController,
+                          keyboardType: TextInputType.number,
+                          inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                           decoration: showPrefix ? InputDecoration(
-                            prefixText: '+88',
+                            prefixText: '+88 ',
                             filled: true,
                             prefixStyle: TextStyle(color: Colors.black,fontSize: 16),
-                            hintText: 'Mobile number input field',
+                            hintText: 'Please enter mobile number',
                             fillColor: Colors.grey.shade50,
                             border: OutlineInputBorder(
                               borderSide: BorderSide.none

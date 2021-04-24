@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:officersclubdhaka/mainApp/util/resources/color.dart';
 import 'package:officersclubdhaka/mainApp/util/resources/images.dart';
 import 'package:officersclubdhaka/mainApp/util/sharedWidgets/rowTextInfoWidget.dart';
@@ -69,7 +70,7 @@ class MemberProfileScreen extends StatelessWidget {
                 CircleAvatar(
                   radius: 45,
                   backgroundImage: CachedNetworkImageProvider(
-                    member.image != null ? Images.imagePrefix+member.image : BackUpData.profileImage
+                    member.image != null ? Images.imagePrefix+member.image! : BackUpData.profileImage
                   ),
                 )
               ],
@@ -116,12 +117,15 @@ class MemberProfileScreen extends StatelessWidget {
                           padding: const EdgeInsets.all(12),
                           child: Column(
                             children: [
-                              if(member.fullNameBangla != null) RowTextWidget(title: 'Bangla Name', subTitle: member.fullNameBangla!,size: 16,rowAlign: CrossAxisAlignment.start,),
-                              if(member.committeePosition != null) RowTextWidget(title: 'Committee Position', subTitle: member.committeePosition!,size: 16),
-                              if(member.occupationName != null) RowTextWidget(title: 'Occupation', subTitle: member.occupationName!,size: 16),
-                              if(member.bloodGroup!= null) RowTextWidget(title: 'Blood Group', subTitle: member.bloodGroup!,size: 16),
-                              if(member.currentAddress != null) RowTextWidget(title: 'Current Address', subTitle: member.currentAddress!,size: 16),
-                              if(member.districtNameEngish != null) RowTextWidget(title: 'District', subTitle: member.districtNameEngish!,size: 16),
+                              RowTextWidget(title: 'Bangla Name', subTitle: member.fullNameBangla ?? '',size: 16,rowAlign: CrossAxisAlignment.start,),
+                              RowTextWidget(title: 'DOB', subTitle: member.dateOfBirth != null ? DateFormat('dd MMM yyyy').format(member.dateOfBirth!) : '',size: 16,rowAlign: CrossAxisAlignment.start,),
+                              RowTextWidget(title: 'Blood Group', subTitle: member.bloodGroup ?? '',size: 16),
+                              RowTextWidget(title: 'Designation', subTitle: member.designationName ?? '',size: 16,rowAlign: CrossAxisAlignment.start,),
+                              RowTextWidget(title: 'Current Stage', subTitle: member.currentStage ?? '',size: 16),
+                              RowTextWidget(title: 'District', subTitle: member.districtNameEngish ?? '',size: 16),
+                              RowTextWidget(title: 'Phone (Off.)', subTitle: member.telephoneOffice ?? '',size: 16),
+                              RowTextWidget(title: 'Phone (Res.)', subTitle: member.telephoneHome ?? '',size: 16),
+                              RowTextWidget(title: 'Email', subTitle: member.email ?? '',size: 16,rowAlign: CrossAxisAlignment.start),
                             ],
                           ),
                         )
@@ -152,7 +156,147 @@ class MemberProfileScreen extends StatelessWidget {
                           ),
                           child: Center(
                             child: Text(
-                              'Personal Information',
+                              'Current Address',
+                              style: TextStyle(
+                                fontSize: 18,
+                                color: Colors.white
+                              ),
+                            ),
+                          ),
+                        ),
+                        Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          padding: const EdgeInsets.all(12),
+                          child: Text(
+                            member.currentAddress ?? ''
+                          )
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+
+                SizedBox(height: 20),
+
+                Card(
+                  elevation: 3,
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                  child: Container(
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(12)
+                    ),
+                    child: Column(
+                      children: [
+                        Container(
+                          height: 45,
+                          decoration: BoxDecoration(
+                              color: AppColor.primary,
+                              borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(12),
+                                  topRight: Radius.circular(12)
+                              )
+                          ),
+                          child: Center(
+                            child: Text(
+                              'Spouse Information',
+                              style: TextStyle(
+                                  fontSize: 18,
+                                  color: Colors.white
+                              ),
+                            ),
+                          ),
+                        ),
+                        Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          padding: const EdgeInsets.all(12),
+                          child: Column(
+                            children: [
+                              RowTextWidget(title: 'Name', subTitle: member.spouseName ?? '',size: 16),
+                              RowTextWidget(title: 'Occupation', subTitle: member.occupationName ?? '',size: 16),
+                            ],
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+
+                SizedBox(height: 20),
+
+                Card(
+                  elevation: 3,
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                  child: Container(
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(12)
+                    ),
+                    child: Column(
+                      children: [
+                        Container(
+                          height: 45,
+                          decoration: BoxDecoration(
+                              color: AppColor.primary,
+                              borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(12),
+                                  topRight: Radius.circular(12)
+                              )
+                          ),
+                          child: Center(
+                            child: Text(
+                              'OffSpring Information',
+                              style: TextStyle(
+                                  fontSize: 18,
+                                  color: Colors.white
+                              ),
+                            ),
+                          ),
+                        ),
+                        if(member.offspring != null)Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          padding: const EdgeInsets.all(12),
+                          child: Wrap(
+                            children: member.offspring!.map((e) => Column(
+                              children: [
+                                RowTextWidget(title: 'Name', subTitle: e.fullName!,size: 16),
+                                RowTextWidget(title: 'Dob', subTitle: e.dob != null ? DateFormat('dd MMM yyyy').format(e.dob!) : '',size: 16),
+                              ],
+                            )).toList(),
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+
+                SizedBox(height: 20),
+
+                Card(
+                  elevation: 3,
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(12)
+                    ),
+                    child: Column(
+                      children: [
+                        Container(
+                          height: 45,
+                          decoration: BoxDecoration(
+                            color: AppColor.primary,
+                            borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(12),
+                              topRight: Radius.circular(12)
+                            )
+                          ),
+                          child: Center(
+                            child: Text(
+                              'Club Information',
                               style: TextStyle(
                                 fontSize: 18,
                                 color: Colors.white
@@ -167,10 +311,11 @@ class MemberProfileScreen extends StatelessWidget {
                           padding: const EdgeInsets.all(12),
                           child: Column(
                             children: [
-                              if(member.telephoneHome != null) RowTextWidget(title: 'Tel Home', subTitle: member.telephoneHome!,size: 16),
-                              if(member.telephoneOffice != null) RowTextWidget(title: 'Tel Office', subTitle: member.telephoneOffice!,size: 16),
-                              if(member.emergencyContactNo != null) RowTextWidget(title: 'Emergency Contact', subTitle: member.emergencyContactNo!,size: 16),
-                              if(member.email != null) RowTextWidget(title: 'Email', subTitle: member.email!,size: 16),
+
+                              RowTextWidget(title: 'Member ID', subTitle: member.membershipId ?? '',size: 16),
+                              RowTextWidget(title: 'Status', subTitle: member.status == '0' ? 'Inactive' : 'Active',size: 16),
+                              if(member.committeePosition != null && member.committeeStatus == '1') RowTextWidget(title: 'Committee Status', subTitle: member.committeePosition ?? '',size: 16),
+                              if(member.subCommitteePosition != null && member.subCommitteePosition == '1') RowTextWidget(title: 'Sub-Committee Status', subTitle: member.subCommitteePosition ?? '',size: 16),
                             ]
                           )
                         )

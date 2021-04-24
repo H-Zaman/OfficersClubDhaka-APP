@@ -18,9 +18,8 @@ class _SplashScreenState extends State<SplashScreen> {
     getData();
   }
 
-  getData() async{
-    var data = await GetStorage().read('userInfo');
-    Future.delayed(Duration(seconds: 2),()=>Get.to(()=>AuthScreen(data: data)));
+  getData(){
+    Future.delayed(Duration(seconds: 2),()=>Get.to(()=>AuthScreen()));
   }
 
   @override

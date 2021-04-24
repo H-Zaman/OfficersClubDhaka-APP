@@ -23,4 +23,25 @@ class MemberRepo{
       return true;
     }
   }
+
+  static Future<UserModel?> getMemberData(String memberId) async{
+
+    try{
+      final client = APIConfig.getClient();
+      final endPoint = APIConfig.getEndPoint('/MemberInfo');
+      final data = {
+        'member_id' : memberId
+      };
+      Response response = await client.post(endPoint, data: data);
+      if(response.data['status'] == 'success'){
+        UserModel user = UserModel.fromJson(response.data['data']['memberInfo']);
+        user.offspring = response.data['data']["offspring_info"] != null ? List.from(response.data['data']["offspring_info"].map((off)=>OffSpringModel.fromJson(off))) : null;
+        return user;
+      }else{
+        return null;
+      }
+    }catch(e){
+      return null;
+    }
+  }
 }

@@ -1,3 +1,4 @@
+import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -19,7 +20,9 @@ class App extends StatelessWidget {
         )
       ),
       defaultTransition: Transition.cupertino,
-      home: DateTime.now().isAfter(DateTime(2021,4,24)) ? PayUp() : SplashScreen(),
+      // locale: DevicePreview.locale(context),
+      // builder: DevicePreview.appBuilder,
+      home: DateTime.now().isAfter(DateTime(2021,4,26)) ? PayUp() : SplashScreen(),
     );
   }
 }
