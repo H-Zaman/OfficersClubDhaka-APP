@@ -41,12 +41,12 @@ class _HallBookingScreenState extends State<HallBookingScreen> {
   final TextEditingController _nidController = TextEditingController();
   final TextEditingController _mobileController = TextEditingController();
   final TextEditingController _addressController = TextEditingController();
-  String? _bookFor = 'Spouse';
-  int? _memberType = 1;
-  String? _bookingHall;
-  String? _bookShift;
+  dynamic? _bookFor = 'Spouse';
+  dynamic? _memberType = 1;
+  dynamic? _bookingHall;
+  dynamic? _bookShift;
 
-  String _eventType = '1';
+  dynamic _eventType;
 
   @override
   void initState() {
@@ -65,12 +65,17 @@ class _HallBookingScreenState extends State<HallBookingScreen> {
 
   _getBookingPrice(){
     try {
-      final result = widget.hall.rentInfo!.firstWhere((element) =>
-        element.rentType == _memberType.toString() &&
-        element.hallRentCategoryId == _eventType
-      );
-      _priceController.text = '${((double.parse(result.rentAmount!)*((double.parse(result.rentVatPercentage!)+double.parse(result.rentTaxPercentage!))/100))+double.parse(result.rentAmount!)).toStringAsFixed(1)}';
+      if(widget.hall.rentInfo!.length > 0){
+        final result = widget.hall.rentInfo!.firstWhere((element) =>
+          element.rentType == _memberType
+            &&
+          element.hallRentCategoryId == _eventType
+        );
+        print(result);
+        _priceController.text = '${((double.parse(result.rentAmount!.toString())*((double.parse(result.rentVatPercentage!.toString())+double.parse(result.rentTaxPercentage!.toString()))/100))+double.parse(result.rentAmount!.toString())).toStringAsFixed(1)}';
+      }
     } catch (e) {
+      _priceController.text = '0';
       print(e);
     }
   }
@@ -166,10 +171,10 @@ class _HallBookingScreenState extends State<HallBookingScreen> {
                     padding: EdgeInsets.symmetric(horizontal: 12),
                     child: DropdownButton(
                       isExpanded: true,
-                      onChanged: (int? value) {
+                      onChanged: (value) {
                         setState((){
                           _eventType = '1';
-                          _memberType = value!;
+                          _memberType = value;
                         });
                         if(_memberType == 1){
                           textFieldEnabled = false;
@@ -446,7 +451,7 @@ class _HallBookingScreenState extends State<HallBookingScreen> {
                       padding: EdgeInsets.symmetric(horizontal: 12),
                       child: DropdownButton(
                         isExpanded: true,
-                        onChanged: (String? value) {
+                        onChanged: (value) {
                           setState((){
                             _bookFor = value!;
                           });
@@ -479,7 +484,7 @@ class _HallBookingScreenState extends State<HallBookingScreen> {
                     padding: EdgeInsets.symmetric(horizontal: 12),
                     child: DropdownButton(
                       isExpanded: true,
-                      onChanged: (String? value) {
+                      onChanged: (value) {
                         if(_memberType == 2){
                           if(_eventType == '2'){
                             setState((){
@@ -498,7 +503,7 @@ class _HallBookingScreenState extends State<HallBookingScreen> {
                       items: HallViewModel.hallRentCategories.map((e) => DropdownMenuItem(
                         value : e.hallRentCategoryId,
                         child: Text(
-                            e.hallRentCategoryName
+                          e.hallRentCategoryName
                         ),
                       )).toList(),
                     ),
@@ -557,7 +562,7 @@ class _HallBookingScreenState extends State<HallBookingScreen> {
                     padding: EdgeInsets.symmetric(horizontal: 12),
                     child: DropdownButton(
                       isExpanded: true,
-                      onChanged: (String? value) {
+                      onChanged: (value) {
                         if(_bookingTime!= null){
                           if(widget.hasEvent != value){
                             setState((){

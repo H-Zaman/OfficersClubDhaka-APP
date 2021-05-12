@@ -1,6 +1,6 @@
 class MemberModel{
-  String title;
-  int id;
+  dynamic title;
+  dynamic id;
   MemberModel({
     required this.title,
     required this.id

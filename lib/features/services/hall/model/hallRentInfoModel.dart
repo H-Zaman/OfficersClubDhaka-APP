@@ -12,13 +12,13 @@ class HallRentInfoModel {
     this.hallRentCategory
   });
 
-  String? hallRentAssignId;
-  String? hallRentCategoryId;
-  String? rentType;
-  String? hallCategoryId;
-  String? rentAmount;
-  String? rentVatPercentage;
-  String? rentTaxPercentage;
+  dynamic? hallRentAssignId;
+  dynamic? hallRentCategoryId;
+  dynamic? rentType;
+  dynamic? hallCategoryId;
+  dynamic? rentAmount;
+  dynamic? rentVatPercentage;
+  dynamic? rentTaxPercentage;
   HallRentCategoryModel? hallRentCategory;
 
   factory HallRentInfoModel.fromJson(Map<String, dynamic> json) => HallRentInfoModel(

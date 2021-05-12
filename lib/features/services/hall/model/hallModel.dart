@@ -15,16 +15,16 @@ class HallModel {
     this.rentInfo
   });
 
-  String? hallCategoryId;
-  String? hallName;
+  dynamic? hallCategoryId;
+  dynamic? hallName;
   dynamic? hallRent;
-  String? hallSize;
-  String? hallFacilities;
-  String? hallRoom;
-  String? hallCapacityType;
-  String? hallFloor;
-  String? hallImage;
-  String? hallPrice;
+  dynamic? hallSize;
+  dynamic? hallFacilities;
+  dynamic? hallRoom;
+  dynamic? hallCapacityType;
+  dynamic? hallFloor;
+  dynamic? hallImage;
+  dynamic? hallPrice;
   List<HallRentInfoModel>? rentInfo;
 
   factory HallModel.fromJson(Map<String, dynamic> json) => HallModel(

@@ -32,35 +32,35 @@ class UserModel {
     this.offspring
   });
 
-  String? memberId;
-  String? membershipId;
-  String? fullNameEnglish;
-  String? fullNameBangla;
-  String? currentStage;
-  String? nid;
-  String? mobile;
-  String? telephoneHome;
-  String? telephoneOffice;
-  String? email;
-  String? bloodGroup;
-  String? currentAddress;
-  String? spouseName;
-  String? spouseOccupationId;
-  String? emergencyContactNo;
-  String? status;
-  String? committeeStatus;
-  String? committeePosition;
-  String? committeeSerial;
-  String? committeeCategoryId;
-  String? image;
+  dynamic? memberId;
+  dynamic? membershipId;
+  dynamic? fullNameEnglish;
+  dynamic? fullNameBangla;
+  dynamic? currentStage;
+  dynamic? nid;
+  dynamic? mobile;
+  dynamic? telephoneHome;
+  dynamic? telephoneOffice;
+  dynamic? email;
+  dynamic? bloodGroup;
+  dynamic? currentAddress;
+  dynamic? spouseName;
+  dynamic? spouseOccupationId;
+  dynamic? emergencyContactNo;
+  dynamic? status;
+  dynamic? committeeStatus;
+  dynamic? committeePosition;
+  dynamic? committeeSerial;
+  dynamic? committeeCategoryId;
+  dynamic? image;
   DateTime? dateOfBirth;
-  String? districtNameEngish;
-  String? districtNameBangla;
-  String? designationName;
-  String? cadreName;
-  String? occupationName;
-  String? subCommitteeStatus;
-  String? subCommitteePosition;
+  dynamic? districtNameEngish;
+  dynamic? districtNameBangla;
+  dynamic? designationName;
+  dynamic? cadreName;
+  dynamic? occupationName;
+  dynamic? subCommitteeStatus;
+  dynamic? subCommitteePosition;
   List<OffSpringModel>? offspring;
 
   factory UserModel.fromJson(Map<String, dynamic> json) {
@@ -108,9 +108,9 @@ class OffSpringModel {
     this.dob,
   });
 
-  String? memberOffspringId;
-  String? memberId;
-  String? fullName;
+  dynamic? memberOffspringId;
+  dynamic? memberId;
+  dynamic? fullName;
   DateTime? dob;
 
   factory OffSpringModel.fromJson(Map<String, dynamic> json) => OffSpringModel(

@@ -24,7 +24,7 @@ class MemberRepo{
     }
   }
 
-  static Future<UserModel?> getMemberData(String memberId) async{
+  static Future<UserModel?> getMemberData(dynamic memberId) async{
 
     try{
       final client = APIConfig.getClient();
@@ -33,6 +33,7 @@ class MemberRepo{
         'member_id' : memberId
       };
       Response response = await client.post(endPoint, data: data);
+      print(response.data);
       if(response.data['status'] == 'success'){
         UserModel user = UserModel.fromJson(response.data['data']['memberInfo']);
         user.offspring = response.data['data']["offspring_info"] != null ? List.from(response.data['data']["offspring_info"].map((off)=>OffSpringModel.fromJson(off))) : null;

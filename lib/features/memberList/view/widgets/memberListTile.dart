@@ -29,7 +29,7 @@ class _MemberListTileState extends State<MemberListTile> {
       child: ListTile(
         onTap: () async{
           loadScreen();
-          UserModel? data = await MemberRepo.getMemberData(widget.member.memberId!);
+          UserModel? data = await MemberRepo.getMemberData(widget.member.memberId!.toString());
           loadScreen();
           if(data != null){
             Get.to(()=>MemberProfileScreen(member: data));
@@ -62,7 +62,7 @@ class _MemberListTileState extends State<MemberListTile> {
               ),
             ),
             Text(
-                widget.member.cadreName!.trim().capitalize!
+                widget.member.cadreName!
             )
           ],
         ),

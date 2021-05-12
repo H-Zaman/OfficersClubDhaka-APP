@@ -63,7 +63,7 @@ class HallPricingInfoWidget extends StatelessWidget {
                     'Rent: ${e.rentAmount}, VAT: ${e.rentVatPercentage}%, Income Tax: ${e.rentTaxPercentage}%'
                 ),
                 Text(
-                    'Total: ${((double.parse(e.rentAmount!)*((double.parse(e.rentVatPercentage!)+double.parse(e.rentTaxPercentage!))/100))+double.parse(e.rentAmount!)).toStringAsFixed(1)}'
+                    'Total: ${((double.parse(e.rentAmount!.toString())*((double.parse(e.rentVatPercentage!.toString())+double.parse(e.rentTaxPercentage!.toString()))/100))+double.parse(e.rentAmount!.toString())).toStringAsFixed(1)}'
                 )
               ],
             ),

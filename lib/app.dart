@@ -22,7 +22,7 @@ class App extends StatelessWidget {
       defaultTransition: Transition.cupertino,
       // locale: DevicePreview.locale(context),
       // builder: DevicePreview.appBuilder,
-      home: DateTime.now().isAfter(DateTime(2021,4,26)) ? PayUp() : SplashScreen(),
+      home: SplashScreen(),
     );
   }
 }

@@ -28,14 +28,14 @@ class HallBasicInfo {
     this.status,
   });
 
-  String? hallBasicDataId;
-  String? hallDescription;
-  String? bookingTime;
-  String? dayShift;
-  String? nightShift;
-  String? noOfHallRoom;
-  String? spaceCapacity;
-  String? status;
+  dynamic? hallBasicDataId;
+  dynamic? hallDescription;
+  dynamic? bookingTime;
+  dynamic? dayShift;
+  dynamic? nightShift;
+  dynamic? noOfHallRoom;
+  dynamic? spaceCapacity;
+  dynamic? status;
 
   factory HallBasicInfo.fromJson(Map<String, dynamic> json) => HallBasicInfo(
     hallBasicDataId: json["hall_basic_data_id"],
@@ -56,9 +56,9 @@ class HallDecoratorCategoryInfo {
     this.decoratorCategoryStatus,
   });
 
-  String? decoratorCategoryId;
-  String? decoratorCategoryName;
-  String? decoratorCategoryStatus;
+  dynamic? decoratorCategoryId;
+  dynamic? decoratorCategoryName;
+  dynamic? decoratorCategoryStatus;
 
   factory HallDecoratorCategoryInfo.fromJson(Map<String, dynamic> json) => HallDecoratorCategoryInfo(
     decoratorCategoryId: json["decorator_category_id"],
@@ -79,14 +79,14 @@ class HallDecoratorDetailsInfo {
     this.decoratorStatus,
   });
 
-  String? decoratorDetailsId;
-  String? decoratorCategoryId;
-  String? decoratorType;
-  String? nameOfInstitution;
-  String? decoratorAddress;
-  String? decoratorMobile;
-  String? decoratorDescription;
-  String? decoratorStatus;
+  dynamic? decoratorDetailsId;
+  dynamic? decoratorCategoryId;
+  dynamic? decoratorType;
+  dynamic? nameOfInstitution;
+  dynamic? decoratorAddress;
+  dynamic? decoratorMobile;
+  dynamic? decoratorDescription;
+  dynamic? decoratorStatus;
 
   factory HallDecoratorDetailsInfo.fromJson(Map<String, dynamic> json) => HallDecoratorDetailsInfo(
     decoratorDetailsId: json["decorator_details_id"],

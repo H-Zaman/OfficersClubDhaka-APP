@@ -15,7 +15,7 @@ class AuthRepo{
         'mobile' : '+88'+mobile
       };
       Response response = await client.post(endPoint,data: data);
-
+      print(response.data['status']);
       if(response.data['status'] == 'success'){
         UserViewModel.setUser(UserModel.fromJson(response.data['member']));
         GetStorage().write('userInfo', {

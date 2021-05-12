@@ -117,16 +117,16 @@ class HallRepo{
   }
 
   static Future<HallBookResponse> bookHall({
-    required String hallId,
-    required String date,
-    required String rentCatId,
-    required String shift,
-    required String bookPrice,
-    required int memberType,
-    required String? name,
-    required String? mobile,
-    required String? nid,
-    required String? address,
+    required dynamic hallId,
+    required dynamic date,
+    required dynamic rentCatId,
+    required dynamic shift,
+    required dynamic bookPrice,
+    required dynamic memberType,
+    required dynamic? name,
+    required dynamic? mobile,
+    required dynamic? nid,
+    required dynamic? address,
   }) async{
     try{
       final endPoint = APIConfig.getEndPoint('/HallBookingSave');
@@ -170,7 +170,7 @@ class HallRepo{
     }
   }
 
-  static Future<bool> checkAvailable({required String hallId,required String date,required String shift}) async{
+  static Future<bool> checkAvailable({required dynamic hallId,required dynamic date,required dynamic shift}) async{
     try{
       final endPoint = APIConfig.getEndPoint('/HallBookingCheck');
 

@@ -7,11 +7,11 @@ class HallEventModel {
     required this.hallCategoryId,
   });
 
-  String hallName;
-  String hallCategoryId;
+  dynamic hallName;
+  dynamic hallCategoryId;
   DateTime hallBookDate;
-  String hallShiftType;
-  String hallRentCategoryName;
+  dynamic hallShiftType;
+  dynamic hallRentCategoryName;
 
   factory HallEventModel.fromJson(Map<String, dynamic> json) {
     return HallEventModel(

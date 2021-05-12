@@ -4,8 +4,8 @@ class HallRentCategoryModel {
     required this.hallRentCategoryName,
   });
 
-  String hallRentCategoryId;
-  String hallRentCategoryName;
+  dynamic hallRentCategoryId;
+  dynamic hallRentCategoryName;
 
   factory HallRentCategoryModel.fromJson(Map<String, dynamic> json) => HallRentCategoryModel(
     hallRentCategoryId: json["hall_rent_category_id"],

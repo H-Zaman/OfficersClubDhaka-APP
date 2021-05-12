@@ -4,7 +4,7 @@ import 'package:officersclubdhaka/mainApp/util/config/dioConfig.dart';
 
 class HallPaymentRepo{
   static final _client = APIConfig.getClient();
-  static Future<HallBookInfoModel?> checkBooking(String bookNo, String mobile) async{
+  static Future<HallBookInfoModel?> checkBooking(dynamic bookNo, dynamic mobile) async{
     final endPoint = APIConfig.getEndPoint('/HallInfoSearch');
     final data = {
       'booking_sl' : bookNo,
@@ -22,7 +22,7 @@ class HallPaymentRepo{
     }
   }
 
-  static hallPayment(String hallBookId) async{
+  static hallPayment(dynamic hallBookId) async{
     final endPoint = APIConfig.getEndPoint('/HallPayment');
     final data = {
       'hall_booking_id' : hallBookId,
